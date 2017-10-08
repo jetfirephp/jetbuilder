@@ -1,0 +1,70 @@
+<!-- xxx Loader Start xxx -->
+<div id="pageloader">
+    <div class="loader-item">
+        <img src="{{ asset('site-loader.gif') }}" alt='loader' />
+        <div>Chargement...</div>
+    </div>
+</div>
+<!-- xxx End xxx -->
+
+<!-- xxx Header xxx -->
+<header>
+    <!-- xxx Top Bar xxx -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <span><i class="fa fa-phone"></i> {{ _data.setting.params.phone }}</span>
+                    <span><i class="fa fa-envelope"></i> {{ _data.setting.params.email }}</span>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <ul class="social-icons">
+                        {% for social, link in _data.setting.params.social %}
+                            <li><a href="{{ link }}"><i class="fa fa-{{ social | replace({' ':'-'}) | lower }}"></i></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div><!-- xxx Top Bar xxx -->
+
+    <!-- xxx Logo And Navigation xxx -->
+    <div id="nav-wrap">
+        <div class="nav-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="main-menu" class="menuzord">
+                            <a href="{{ path('public.page') }}" class="menuzord-brand"><img height="90px" src="{{ asset('Logo-webzy.png') }}" alt="Logo Webzy" style="position:absolute; margin-top:-30px"></a>
+                            <ul class="menuzord-menu">
+                                <li>
+                                    <a href="{{ path('public.page.price') }}">Tarif</a>
+                                </li>
+                               {# <li class="pull-right"><a><i class="fa fa-globe fa-lg"></i></a>
+                                    <ul class="dropdown">
+                                        <li>
+                                            <a href="{{ path('en') }}">English</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('fr') }}">Français</a>
+                                        </li>
+                                    </ul>
+                                </li>#}
+                                <li class="pull-right"><a class="btn-round-bg text-white" href="{{ path('public.page.theme') }}">Créer mon site</a></li>
+                                {% if session._admin_logged_ == true %}
+                                    <li class="pull-right">
+                                        <a href="{{ path('admin.home') }}">Admin</a>
+                                    </li>
+                                {% else %}
+                                    <li class="pull-right">
+                                        <a href="{{ path('admin.home') }}">Connexion</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- xxx Logo and Navigation End xxx -->
+</header><!-- xxx Header End xxx -->

@@ -1,0 +1,70 @@
+<footer>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3>Suivez-Nous</h3>
+                    <ul class="social-icons">
+                        {% for social, link in _data.setting.params.social %}
+                            <li><a href="{{ link }}" data-toggle="tooltip" title="{{ social }}"><i class="fa fa-{{ social | replace({' ':'-'}) | lower }}"></i></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="col-sm-3">
+                    <h3>Notre Adresse</h3>
+                    <div class="icon-small">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <div class="icon-text">
+                        {{ _data.setting.params.address.road }} <br>{{ _data.setting.params.address.postal_code }} {{ _data.setting.params.address.city }}
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <h3>Contact</h3>
+                    <div class="icon-small">
+                        <i class="fa fa-envelope-o"></i>
+                    </div>
+                    <div class="icon-text">
+                        <a href="mailto:{{ _data.setting.params.email }}">{{ _data.setting.params.email }}</a><br>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <h3>Téléphone</h3>
+                    <div class="icon-small">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="icon-text">
+                        01 82 83 72 30<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<section class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                Copyright &copy; {{ "now" | date('Y') }} <a href="{{ path('public.page') }}"><span class="theme-color">Webzy</span></a>. Tous droits réservés
+            </div>
+            <div class="col-sm-8">
+                <ul class="footer-links">
+                    <li><a href="{{ path('public.page') }}">Accueil</a></li>
+                    <li><a href="{{ path('public.page.theme') }}">S'inscrire</a></li>
+                    <li><a href="{{ path('admin.home') }}">Connexion</a></li>
+                    <li><a href="{{ path('public.page.cgu') }}">CGU</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- xxx Footer Content End xxx -->
+
+<!-- xxx Back To Top xxx -->
+<a href="#" class="scrollToTop img-circle">
+    <i class="fa fa-angle-up"></i>
+</a>

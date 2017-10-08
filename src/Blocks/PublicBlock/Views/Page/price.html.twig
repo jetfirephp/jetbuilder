@@ -1,0 +1,71 @@
+{% extends "default_layout.html.twig" %}
+
+{% block css %}
+    <style>
+        .price .icon-white-bg img{
+            height: 85px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <!-- xxx Breadcrumns Wrap xxx -->
+    <section class="fullscreen background parallax image breadcrumb-wrap blog-bg" data-img-width="1600" data-img-height="1067" data-diff="100">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <h1>Notre tarif</h1>
+            <small><a href="{{ path('public.page') }}">Accueil</a><i class="fa fa-angle-double-right"></i>Tarif</small>
+        </div>
+    </section><!-- xxx Breadcrumns Wrap End xxx -->
+
+    <!-- Main Bodycontent Start -->
+    <div id="body-content">
+        <div class="container price">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pricing-box">
+                        <div class="head">
+                            Standard
+                        </div>
+                        <div class="pricing">
+                            {{ price.default.amount }} <i class="fa fa-{{ price.default.currency }}"></i><span> / Mois</span>
+                        </div>
+                        <ul class="list-detail">
+                            <li>Site responsive</li>
+                            <li>Plusieurs modules gratuits</li>
+                            <li>Aucune publicité</li>
+                            <li>Assistance premium</li>
+                        </ul>
+
+                        <a href="{{ path('public.page.theme') }}" class="btn-round-bg btn-medium">Créer mon site</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt40">
+                <div class="col-md-12">
+                    <h2 class="center-align">Payez en toute sécurité</h2>
+                </div>
+                <div class="col-md-6">
+                    <div class="icon-white-bg center-align">
+                        <h3>Un système de paiement 100% sécurisé</h3>
+                        <img src="{{ asset('secure.jpg') }}" alt="Paiement sécurisé">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="icon-white-bg center-align">
+                        <h3>Nous acceptons les paiements suivants :</h3>
+                        <img src="{{ asset('payment-stripe.png') }}" alt="Paiement par carte bleue et stripe">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt40">
+                <div class="col-md-offset-2 col-md-8 center-align">
+                    <p>Les prix affichés n'incluent pas la TVA définie en fonction du pays de facturation de l'utilisateur.
+                        Le prix définitif sera visible sur la page d'achat, avant la validation du paiement.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

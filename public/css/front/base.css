@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,600italic,700,700italic");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700");
+
+
+@import url("bootstrap.min.css"); 						/* Main Bootstrap */
+@import url("animate.min.css");							/* Animate On Page Scroll */
+@import url("menuzord.css");							/* Main Animated Navigation */
+@import url("jquery.mb.YTPlayer.css");
+@import url("menuzord-animations.css");					/* Supporting Animation for Navigation */
+@import url("cubeportfolio.min.css");						/* Grid Gallery Stylesheet */
+@import url("style.css");								/* Main Theme Style */
+@import url("font-awesome.min.css");					/* Iconin Font Stylesheet */
+@import url("owl.carousel.css");						/* Carousel Stylesheet */
+@import url("shortcodes.css");
+@import url("grid.css");								/* Responsive Media Queries */
+@import url("style-switcher.css");
+
+
+

@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+set_time_limit(0);
+
+define('ROOT',__DIR__);
+define ('WEBROOT', str_replace('index.php', '', $_SERVER['SCRIPT_NAME']));
+require ROOT.'/vendor/autoload.php';
+
+$jet = new \JetFire\Framework\App();
+$jet->load(include ROOT.'/config/boot.inc.php');
+$jet->boot();
+$cli = $jet->get('console');
+$cli->run();

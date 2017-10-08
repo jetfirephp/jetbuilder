@@ -1,0 +1,62 @@
+{% extends "default_layout.html.twig" %}
+{% import 'Macros/message.html.twig' as form %}
+
+{% block body %}
+
+    <!-- xxx Breadcrumns Wrap xxx -->
+    <section class="fullscreen background parallax image breadcrumb-wrap blog-bg" data-img-width="1600" data-img-height="1067" data-diff="100">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <h1>Le design parfait pour votre projet</h1>
+            <p>Choisissez votre mise en page préférée et personnalisez-la comme vous le souhaitez !</p>
+            <small><a href="{{ path('public.page') }}">Accueil</a><i class="fa fa-angle-double-right"></i>Thèmes</small>
+        </div>
+    </section><!-- xxx Breadcrumns Wrap End xxx -->
+
+    <!-- Main Bodycontent Start -->
+    <div id="body-content">
+        <div class="container">
+
+            <div id="js-filters-awesome-work" class="cbp-l-filters-work">
+                <div data-filter="*" class="cbp-filter-item-active cbp-filter-item">
+                    Tout
+                </div>
+                {% for profession in professions %}
+                <div data-filter=".{{ profession.slug }}" class="cbp-filter-item">
+                    {{ profession.name }} <div class="cbp-filter-counter"></div>
+                </div>
+                {% endfor %}
+            </div>
+            <div id="js-grid-awesome-work" class="cbp cbp-l-grid-work">
+                {% for theme in themes %}
+                    {% if theme.website.domain|slice(0, 4) == 'http' %}
+                        {% set theme_path = theme.website.domain %}
+                    {% else %}
+                        {% set theme_path = path ~ theme.website.domain %}
+                    {% endif %}
+                    <div class="cbp-item {% for profession in theme.professions %}{{ profession.slug }} {% endfor %}">
+                        <a href="{{ path('public.preview') }}?template_id={{ theme.id }}&template_path={{ theme_path }}" target="_blank" class="cbp-caption" data-title="{{ theme.name }}">
+                            <div class="cbp-caption-defaultWrap">
+                                <img src="{{ asset(theme.thumbnail.path) }}" alt="{{ theme.thumbnail.alt }}" style="height:170px;">
+                            </div>
+                        </a>
+                        <a href="{{ path('public.preview') }}?template_id={{ theme.id }}&template_path={{ theme_path }}" target="_blank" class="cbp-l-grid-work-title">{{ theme.name }}</a>
+                        <div class="cbp-l-grid-work-desc">
+                            <a href="{{ path('public.preview') }}?template_id={{ theme.id }}&template_path={{ theme_path }}" target="_blank" class="btn-round-bg btn-medium"><i class="fa fa-eye"></i> Démo</a>
+                            <a href="{{ path('public.registration', {'theme_id' : theme.id}) }}" class="btn-round-bg btn-medium"><i class="fa fa-check"></i> Sélectionner</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+           {# <div id="js-loadMore-awesome-work" class="cbp-l-loadMore-button">
+                <a href="ajax-full-width/loadMore-3col.html" class="cbp-l-loadMore-link" rel="nofollow">
+                    <span class="cbp-l-loadMore-defaultText">LOAD MORE</span>
+                    <span class="cbp-l-loadMore-loadingText">LOADING...</span>
+                    <span class="cbp-l-loadMore-noMoreLoading">NO MORE WORKS</span>
+                </a>
+            </div>#}
+        </div>
+    </div>
+    
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <title>Admin {{ app_name }}</title>
+
+  <!-- BEGIN META -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="your,keywords">
+  <meta name="description" content="{{ app_name }} admin panel">
+  <meta name="_token" content="{{ token() }}">
+
+  <!-- END META -->
+  {#    {{ debug_bar_header()|raw }}#}
+
+  <!-- BEGIN STYLESHEETS -->
+  {% for css in libs['css'] %}
+    <link href='{{ asset(css) }}' rel='stylesheet' type='text/css'/>
+  {% endfor %}
+
+  <link type="text/css" rel="stylesheet" href="{{ asset('dist/css/admin.css') }}"/>
+  <!-- END STYLESHEETS -->
+
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<!-- BEGIN JAVASCRIPT -->
+<script>
+
+  var ENV = "{{ env }}";
+  var APP_NAME = "{{ app_name }}";
+  var AUTH = {{ auth | json_encode | raw }};
+  var DOMAIN = "{{ domain }}";
+  var ADMIN_DOMAIN = "{{ admin_domain }}";
+  var PUBLIC_PATH = "{{ public_path }}";
+  var MODULES = {{ modules | json_encode | raw }};
+  var FIELD_TYPES = {{ field_types | json_encode | raw }};
+  var SETTINGS = {{ settings | json_encode | raw }};
+
+  var GLOBAL_ROUTES = {};
+  var MODULES_ROUTES = {};
+  var FIELD_SETUP_ROUTES = {};
+  var FIELD_RENDER_ROUTES = {};
+
+</script>
+
+{% for js in libs['js'] %}
+  <script defer src="{{ asset(js) }}"></script>
+{% endfor %}
+<script defer src="{{ asset('dist/manifest.js') }}"></script>
+<script defer src="{{ asset('dist/vendor.js') }}"></script>
+<script defer src="{{ asset('dist/admin.js') }}"></script>
+{#{{ debug_bar_footer()|raw }}#}
+<!-- END JAVASCRIPT -->
+</body>
+</html>

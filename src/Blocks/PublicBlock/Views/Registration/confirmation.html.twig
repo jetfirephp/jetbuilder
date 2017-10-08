@@ -1,0 +1,70 @@
+{% extends "default_layout.html.twig" %}
+{% import 'Macros/message.html.twig' as form %}
+
+{% block body %}
+
+    <!-- xxx Breadcrumns Wrap xxx -->
+    <section class="fullscreen background parallax image breadcrumb-wrap blog-bg" data-img-width="1600" data-img-height="1067" data-diff="100">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <h1>Inscription</h1>
+            <small>
+                <a href="{{ path('public.page') }}">Accueil</a><i class="fa fa-angle-double-right"></i>
+                <a href="{{ path('public.theme') }}">Thèmes</a><i class="fa fa-angle-double-right"></i>
+                Inscription
+            </small>
+        </div>
+    </section>
+    <!-- xxx Breadcrumns Wrap End xxx -->
+    <div id="body-content register-section">
+        <div class="container">
+
+            <div class="row mb40 mt40">
+                <div class="col-md-12 center-align">
+                    <h1>Merci de votre inscription</h1>
+                    <h3>Vous pouvez choisir un autre design à tout moment.</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                     <div class="about-white-intro">
+                         <div id="response-message" class="alert {% if status == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                             <button data-dismiss="alert" class="close" type="button">×</button>
+                             <p>{{ message }}</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb40 mt40">
+                <div class="col-md-12 center-align">
+                    {% if status == 'success' %}
+                    <a class="btn-round-dark btn-medium" href="{{ path('admin.home') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> Accès à l'admin</a>
+                    <a class="btn-round-border btn-medium" href="{{ url }}">Accès au site <i class="fa fa-angle-double-right"></i></a>
+                    {% else %}
+                        <a class="btn-round-bg btn-medium" href="{{ path('public.theme') }}"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Retour au choix de thèmes</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ captcha.js() }}
+    <script src="{{ asset('libs/jquery.validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('themes/front/register.js') }}"></script>
+    <script>
+        var recaptcha;
+        var recaptchaCallback = function() {
+            //Render the recaptcha1 on the element with ID "recaptcha1"
+            recaptcha = grecaptcha.render('recaptcha', {
+                'sitekey' : '{{ public_key }}', //Replace this with your Site key
+                'theme' : 'light'
+            });
+        };
+        registerUser("{{ path('public.login.register', {'theme_id': theme.id}) }}")
+    </script>
+{% endblock %}

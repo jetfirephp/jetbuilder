@@ -1,0 +1,8 @@
+<FilesMatch "\.(css|js|png|jpg|gif|ico|ttf|ttc|otf|eot|woff|woff2|txt|xml|html|swf)(\.gz)?$">
+    Allow from all
+</FilesMatch>
+
+<FilesMatch "\.(php)(\.gz)?$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

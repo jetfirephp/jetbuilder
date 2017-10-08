@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Database credentials
+ user="{{ DB_USER }}"
+ password="{{ DB_PASS }}"
+ host="{{ DB_HOST }}"
+ db_name="{{ DB_NAME }}"
+
+# Other options
+ backup_path="{{ DB_BACKUP_PATH }}"
+ date=$(date +"%d-%m-%Y")
+
+# Dump database into SQL file
+ mysqldump --user=$user --password=$password --host=$host $db_name | gzip > $backup_path/$db_name-$date.sql.gz
+
+# Delete files older than 182 days
+find $backup_path/* -name *.sql -mtime +182 -exec rm {} \;

@@ -1,0 +1,76 @@
+{
+  "name": "{{APP_NAME}}",
+  "domain": "{{DOMAIN}}",
+  "admin_domain": "{{ADMIN_DOMAIN}}",
+  "sub_domain": {{SUB_DOMAIN}},
+
+  "environment": "{{ENV}}",
+  "maintenance": {{MAINTENANCE}},
+
+  "db": {
+    "default": {
+      "driver": "{{DB_DRIVER}}",
+      "host": "{{DB_HOST}}",
+      "user": "{{DB_USER}}",
+      "pass": "{{DB_PASS}}",
+      "db": "{{DB_NAME}}",
+      "prefix": "{{DB_PREFIX}}"
+    }
+  },
+
+  "mail": {
+    "params": {
+      "transport": "{{MAIL_TRANSPORT}}",
+      "host": "{{MAIL_HOST}}",
+      "user": "{{MAIL_USER}}",
+      "pass": "{{MAIL_PASS}}",
+      "port": {{MAIL_PORT}},
+      "charset": "UTF-8"
+    },
+    "from": {
+      "{{MAIL_CONTACT}}": "Contact {{APP_NAME}}"
+    }
+  },
+
+  "params": {
+
+      "phone": "01 82 83 72 30",
+      "email": "support@web-zy.com",
+
+      "address": {
+        "road": "85 Avenue Henri Barbusse",
+        "postal_code": "92140",
+        "city": "Clamart",
+        "country": "FRANCE"
+      },
+
+      "social": {
+        "facebook": "#",
+        "twitter": "#",
+        "instagram": "#"
+      }
+
+    },
+
+
+  "payment": {
+      "stripe": {
+        "public_key": "{{STRIPE_PUBLIC_KEY}}",
+        "secret_key": "{{STRIPE_SECRET_KEY}}",
+        "currency": "eur",
+        "tva": 20
+      },
+      "default":{
+        "amount": 39.99,
+        "month": 1,
+        "currency": "eur"
+      },
+      "promo": {}
+    },
+
+  "imports": {
+    "ikosoft": {
+      "path": "{{IKOSOFT_FTP_PATH}}"
+    }
+  }
+}
