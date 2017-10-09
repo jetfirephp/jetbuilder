@@ -27,7 +27,7 @@ return [
         ],
         'locales' => [
             'admin' => [
-                'en_GB' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php',
+                /*'en_GB' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php',*/
                 'fr_FR' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/fr_FR.php',
             ]
         ]

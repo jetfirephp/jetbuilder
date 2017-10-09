@@ -32,7 +32,7 @@ class AuthController extends Controller
             $account = Account::where('id', $auth->getRemember('id'))->where('token', $auth->getRemember('token'))->get(true);
             if (!is_null($account) && isset($account['id'])) {
                 $auth->log($account->_getTable());
-                $auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));
+                /*$auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));*/
                 return $this->redirect()->url($admin_url);
             }
         }
@@ -73,7 +73,7 @@ class AuthController extends Controller
                     }
                     return $response;
                 }
-                $response = ['status' => 'error', 'message' => 'Compte inexistant'];
+                $response = ['status' => 'error', 'message' => 'Account not found'];
             }
             return $response;
         }
