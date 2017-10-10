@@ -2,6 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 
+import filters from '@admin/helper/filter'
+import directives from '@admin/helper/directive'
+import store from '@admin/store/store'
+
+import 'jquery'
+import 'bootstrap'
+import '@admin_resource/sass/admin.scss'
+
+window.jQuery = $;
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.http.options.emulateJSON = true;
@@ -20,16 +30,6 @@ Vue.http.interceptors.push((request, next) => {
     });
 });
 
-import 'jquery'
-import 'bootstrap'
-import '@admin_resource/sass/admin.scss'
-
-window.jQuery = $;
-
-import filters from '@admin/helper/filter'
-import directives from '@admin/helper/directive'
-import store from '@admin/store/store'
-
 let routes = [];
 let global_routes = [];
 let default_route = {
@@ -38,7 +38,7 @@ let default_route = {
 };
 
 /* Modules routes */
-for (let module in MODULES) {
+/*for (let module in MODULES) {
     if (MODULES.hasOwnProperty(module)) {
         let route = require('@modules' + MODULES[module]['name'].replace(" ", "") + '/Views/Admin/routes');
         routes.push(route.routes);
@@ -51,9 +51,10 @@ for (let module in MODULES) {
             GLOBAL_ROUTES[MODULES[module]['name']] = route.global;
         }
     }
-}
+}*/
+
 /* Custom field types */
-for (let field_cat in FIELD_TYPES) {
+/*for (let field_cat in FIELD_TYPES) {
     if (FIELD_TYPES.hasOwnProperty(field_cat)) {
         for (let field in FIELD_TYPES[field_cat]['values']) {
             if (FIELD_TYPES[field_cat]['values'].hasOwnProperty(field) && FIELD_TYPES[field_cat]['values'][field][0] != "repeater") {
@@ -81,7 +82,7 @@ for (let field_cat in FIELD_TYPES) {
             }
         }
     }
-}
+}*/
 
 let website_routes = [
     {
@@ -136,28 +137,15 @@ let website_routes = [
     }
 ];
 
-for (let module_route in routes) {
-    if (routes.hasOwnProperty(module_route))
-        for (let route in routes[module_route])
-            if (routes[module_route].hasOwnProperty(route))
+/*for (let module_route in routes) {
+    if (routes.hasOwnProperty(module_route)) {
+        for (let route in routes[module_route]) {
+            if (routes[module_route].hasOwnProperty(route)) {
                 website_routes.push(routes[module_route][route]);
-}
-
-/* Custom filters */
-for (let key in filters) {
-    if (filters.hasOwnProperty(key)) {
-        Vue.filter(key, filters[key]);
+            }
+        }
     }
-}
-/* End filters */
-
-/* Custom directives */
-for (let key in directives) {
-    if (directives.hasOwnProperty(key)) {
-        Vue.directive(key, directives[key]);
-    }
-}
-/* End directives */
+}*/
 
 /* Routes */
 const admin_routes = [
@@ -266,6 +254,23 @@ const admin_router = new VueRouter({
 });
 
 
+/* Custom filters */
+for (let key in filters) {
+    if (filters.hasOwnProperty(key)) {
+        Vue.filter(key, filters[key]);
+    }
+}
+/* End filters */
+
+/* Custom directives */
+for (let key in directives) {
+    if (directives.hasOwnProperty(key)) {
+        Vue.directive(key, directives[key]);
+    }
+}
+/* End directives */
+
+/* Init app */
 new Vue({
     router: admin_router,
     store,

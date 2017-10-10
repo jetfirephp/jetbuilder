@@ -21,6 +21,7 @@ return [
                     'lang_codes' => [
                         'en' => 'en_GB',
                         'fr' => 'fr_FR',
+                        'it' => 'it_IT',
                     ]
                 ]
             ]

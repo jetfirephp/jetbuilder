@@ -68,7 +68,7 @@ class SystemMiddleware
      */
     private function canAccessDomain($domain, App $app, Route $route)
     {
-        if (isset($route->getTarget('params')['domain_key'])) {
+        if (isset($route->getTarget('params')['domain_key']) && $app->data['setting']['environment'] != 'dev') {
             $domain_key = $route->getTarget('params')['domain_key'];
             if (isset($app->data['setting'][$domain_key]) && rtrim($app->data['setting'][$domain_key], '/') !== rtrim($domain, '/')) {
                 return false;

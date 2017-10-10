@@ -4,6 +4,7 @@ namespace Jet\Middleware;
 
 use Jet\Services\AppProvider\AppTranslationProvider;
 use JetFire\Framework\App;
+use JetFire\Framework\System\JsonResponse;
 use JetFire\Framework\System\Request;
 use JetFire\Framework\System\Response;
 use JetFire\Routing\Route;
@@ -77,11 +78,11 @@ class TranslationMiddleware
     {
         if ($route->hasTarget('data') && isset($route->getTarget('data')['message'])) {
             $params = $route->getTarget('params');
-            $placeholder =  isset($route->getTarget('data')['placeholder']) ? $route->getTarget('data')['placeholder'] : [];
+            $placeholder = isset($route->getTarget('data')['placeholder']) ? $route->getTarget('data')['placeholder'] : [];
             if(isset($this->app->data['_locale']) && isset($params['lang_codes'][$this->app->data['_lang_code']])) {
                 $content = $route->getTarget('data');
                 $content['message'] = $translator->translate($content['message'], $placeholder, $params['locale_domain'], $this->app->data['_locale']);
-                return $response->setContent(json_encode($content));
+                return $params['locale_domain'] == 'admin' ? new JsonResponse($content) : $response->setContent(json_encode($content));
             }
         }
         return true;

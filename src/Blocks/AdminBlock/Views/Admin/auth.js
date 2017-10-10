@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import VueI18n from 'vue-i18n'
 
+import {auth_routes} from '@admin_block/routes';
+import * as messages from '@admin/locale';
+
 import '@admin_resource/sass/auth.scss'
 
 import store from '@admin/store/store'
@@ -27,43 +30,17 @@ Vue.http.interceptors.push((request, next)  => {
 });
 
 /* Setup admin locale */
-const messages = require(`@admin/locale`);
 const i18n = new VueI18n({
     locale: REQUEST_LOCALE, // set locale
     messages // set locale messages
 });
 
-// Set up routing and match routes to components
-const auth_routes = [
-    {
-        path: '/login',
-        component: function(resolve){
-            require(['@admin/pages/Auth/Login.vue'],resolve)
-        }
-    },
-    {
-        path: '/lost-password',
-        component: function(resolve){
-            require(['@admin/pages/Auth/LostPassword.vue'],resolve)
-        }
-    },
-    {
-        path: '/reset-password',
-        component: function(resolve){
-            require(['@admin/pages/Auth/ResetPassword.vue'],resolve)
-        }
-    },
-    {
-        path: '*',
-        redirect: '/login'
-    }
-];
-
+/* Setup routes */
 const auth_router = new VueRouter({
     routes: auth_routes
 });
 
-
+/* Init app */
 const app = new Vue({
     router :auth_router,
     i18n,

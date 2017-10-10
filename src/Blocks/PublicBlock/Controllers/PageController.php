@@ -2,7 +2,6 @@
 
 namespace Jet\PublicBlock\Controllers;
 
-use Jet\Models\Profession;
 use Jet\Models\Theme;
 use JetFire\Framework\System\Controller;
 
@@ -37,8 +36,7 @@ class PageController extends Controller
     {
         $domain = (isset($this->app->data['setting']['domain'])) ? $this->app->data['setting']['domain'] : '';
         $path = $domain . WEBROOT . 'site/';
-        $professions = Profession::select('name', 'slug')->get();
         $themes = Theme::repo()->frontList();
-        return compact('themes', 'professions', 'path');
+        return compact('themes', 'path');
     }
 } 

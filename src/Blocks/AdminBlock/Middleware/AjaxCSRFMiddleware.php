@@ -8,6 +8,7 @@ use Jet\Services\Auth;
 use JetFire\Framework\App;
 use JetFire\Framework\Providers\ResponseProvider;
 use JetFire\Framework\System\Request;
+use JetFire\Http\Session;
 use JetFire\Routing\ResponseInterface;
 use JetFire\Routing\Route;
 
@@ -19,22 +20,22 @@ class AjaxCSRFMiddleware extends MainMiddleware
 {
 
     /**
-     * @var
+     * @var Session
      */
     private $session;
 
     /**
-     * @param App $app
-     * @param Route $route
      * @param Request $request
      * @param ResponseProvider $responseProvider
+     * @param App $app
+     * @param Route $route
      * @param Auth $auth
      * @return bool|ResponseInterface
      */
-    public function handle(App $app, Route $route, Request $request, ResponseProvider $responseProvider, Auth $auth)
+    public function handle(Request $request, ResponseProvider $responseProvider, App $app, Route $route, Auth $auth)
     {
         $admin_url = $this->getAdminUrl($app);
-
+        $this->session = $app->get('session')->getSession();
         if ($request->ajax() || $request->pjax()) {
             $response = $responseProvider->getResponse();
             if (!$this->hasXss(['token' => $request->headers->get('X-CSRF-TOKEN'), 'time' => 7200])) {

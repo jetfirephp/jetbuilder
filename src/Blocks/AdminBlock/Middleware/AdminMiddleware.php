@@ -57,16 +57,5 @@ class AdminMiddleware extends MainMiddleware
         
         return true;
     }
-
-    /**
-     * @param Route $route
-     * @return bool|JsonResponse
-     */
-    public function afterHandle(Route $route)
-    {
-        return ($route->hasTarget('data') && isset($route->getParams()['ajax']) && $route->getParams()['ajax'] === true)
-            ? new JsonResponse($route->getTarget('data'))
-            : true;
-    }
     
 }

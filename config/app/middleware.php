@@ -29,13 +29,21 @@ return [
 
     'after' => [
 
+        'route_middleware' => [
+            
+        ],
+
+        'class_middleware' => [
+
+        ],
+        
+        'block_middleware' => [
+            'src/Blocks/AdminBlock/' => 'Jet\AdminBlock\Middleware\AdminMiddleware@afterHandle'
+        ],
+
         'global_middleware' => [
             'Jet\Middleware\TranslationMiddleware@afterHandle',
             'Jet\Middleware\SystemMiddleware@afterHandle'
-        ],
-
-        'block_middleware' => [
-            'src/Blocks/AdminBlock/' => 'Jet\AdminBlock\Middleware\AdminMiddleware@afterHandle'
         ],
 
     ]

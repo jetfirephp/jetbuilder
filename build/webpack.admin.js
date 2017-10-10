@@ -76,6 +76,7 @@ module.exports = {
         alias: {
             'vue' : 'vue/dist/vue.js',
             '@' : resolve(),
+            '@admin_block' : resolve('src/Blocks/AdminBlock/'),
             '@admin' :  resolve('src/Blocks/AdminBlock/Views/Admin/'),
             '@admin_resource': resolve('src/Blocks/AdminBlock/Resources/public/'),
             '@modules': resolve('src/Modules/')
