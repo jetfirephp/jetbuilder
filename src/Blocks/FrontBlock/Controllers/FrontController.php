@@ -452,18 +452,17 @@ class FrontController extends MainController
     /**
      * @param null $path
      * @param array $params
-     * @param string $subdomain
      * @return mixed|null
      */
-    public function link($path = null, $params = [], $subdomain = '')
+    public function link($path = null, $params = [])
     {
         if (empty($this->routes))
             $this->routes = Route::repo()->getWebsiteRoutes($this->websites, $this->getWebsiteData($this->website));
         foreach ($this->routes as $route) {
             if ($route['name'] == $path) {
                 $url = $route['url'];
-                if (isset($route['subdomain']) && !is_null($route['subdomain']))
-                    $url = str_replace('{subdomain}', $subdomain, $route['subdomain']);
+                if (isset($route['subdomain']) && !is_null($route['subdomain']) && isset($params['{subdomain}']))
+                    $url = str_replace('{subdomain}', $params['{subdomain}'], $route['subdomain']);
                 foreach ($params as $key => $value) $url = str_replace(':' . $key, $value, $url);
                 return (substr($this->website->getDomain(), 0, 4) === 'http')
                     ? $url

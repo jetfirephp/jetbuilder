@@ -1,5 +1,11 @@
 <?php return array(
 
+    'middleware' => include 'app/middleware.php',
+    'cron' => include 'app/cron.php',
+    'intro' => include 'app/intro.php',
+    'locales' => include 'app/locale.php',
+    'events' => include 'app/event.php',
+    
     'loader' =>
         array(
             'namespaces' =>
@@ -12,6 +18,7 @@
             'classes' =>
                 array(),
         ),
+    
     'blocks' =>
         array(
             'Public' =>
@@ -28,6 +35,7 @@
                     'view_dir' => 'src/Blocks/FrontBlock/Views/'
                 ),
         ),
+    
     'fixtures' =>
         array(
             'src/DataFixtures/',
@@ -36,22 +44,8 @@
             'src/Themes/Balsamine/Fixtures/',
         ),
     
-    'middleware' => include 'app/middleware.php',
-    'cron' => include 'app/cron.php',
-    'intro' => include 'app/intro.php',
-    'locales' => include 'app/locale.php',
-    'events' => include 'app/event.php',
-    
-    'recaptcha' => [
+    'recaptcha' => array(
         'public_key' => '6LcqFCQTAAAAAAG_gnMpgTnE6809TroE30F4fMcp',
         'secret_key' => '6LcqFCQTAAAAAFCK_vTqCOS8slr8s5AI4Y3WwWNQ'
-    ],
-    'scripts' =>
-        array(
-            'npm' =>
-                array(
-                    'enable' => false,
-                    'build' => 'npm run build --base=webpack.admin',
-                ),
-        ),
+    )
 );

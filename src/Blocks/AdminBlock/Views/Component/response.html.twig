@@ -1,0 +1,53 @@
+<script id="response-template" type="text/x-template">
+    <div style="max-width: 100%" role="alert" :class="'response-wrapper w-400px mx-auto alert alert-dismissible fade show response-bloc alert-' + response.status" v-show="response.status != null">
+        <button type="button" class="close" @click="close" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <ul class="m-0">
+            <li v-for="message in messages">
+                <span v-if="typeof message == 'string'">${message}</span>
+                <div v-else>
+                    <span v-for="m in message">
+                        ${m}
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</script>
+
+<script>
+    Vue.component('response', {
+        template: '#response-template',
+        delimiters: ['${', '}'],
+        props: {
+            response: {
+                type: Object,
+                default: function () {
+                    return {
+                        status: null,
+                        message: []
+                    }
+                }
+            }
+        },
+        watch: {
+            'response.status': {
+                handler: function(){
+                    $('.response-wrapper').show();
+                },
+                deep: true
+            }
+        },
+        computed: {
+            messages: function () {
+                return (typeof this.response.message === 'string') ? [this.response.message] : this.response.message;
+            }
+        },
+        methods: {
+            close: function () {
+                $('.response-wrapper').hide();
+            }
+        }
+    });
+</script>

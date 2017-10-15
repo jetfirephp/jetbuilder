@@ -44,11 +44,12 @@ class TextExtension extends Twig_Extension
         return array(
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
-            new Twig_SimpleFilter('trans', function ($text) {
-                $request = $this->app->get('request');
-                $locale = isset($this->app->data['app']['locales'][$request->getLocale()]['locale'])
-                    ? $this->app->data['app']['locales'][$request->getLocale()]['locale'] : 'fr_FR';
-                return $this->app->get('translator')->translate($text, [], 'public', $locale);
+            new Twig_SimpleFilter('trans', function ($text, $placeholder = []) {
+                $route = $this->app->get('routing')->getRouter()->route;
+                $params = $route->getTarget('params');
+                return (isset($this->app->data['_locale']) && isset($params['lang_codes'][$this->app->data['_lang_code']]))
+                    ? $this->app->get('translator')->translate($text, $placeholder, $params['locale_domain'], $this->app->data['_locale'])
+                    : $text;
             }),
         );
     }

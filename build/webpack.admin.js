@@ -9,6 +9,7 @@ function resolve (dir) {
 module.exports = {
 
     context: resolve(),
+    
     entry: {
         /*admin: ['./src/Blocks/AdminBlock/Views/Admin/admin.js'],*/
         auth: ['./src/Blocks/AdminBlock/Views/Admin/auth.js']
@@ -67,6 +68,7 @@ module.exports = {
         }),
         new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/)
     ],
+    
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         modules: [

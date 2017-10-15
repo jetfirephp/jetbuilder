@@ -12,9 +12,9 @@ return [
         'block_middleware' => [
             'src/Blocks/AdminBlock/' => [
                 'Jet\AdminBlock\Middleware\AdminMiddleware@beforeHandle',
-                'Jet\AdminBlock\Middleware\AjaxCSRFMiddleware',
+                'Jet\AdminBlock\Middleware\AdminCSRFMiddleware',
             ],
-            'src/Blocks/PublicBlock/' => 'Jet\Middleware\CSRFMiddleware'
+            //'src/Blocks/PublicBlock/' => 'Jet\Middleware\CSRFMiddleware'
         ],
 
         'class_middleware' => [
@@ -23,6 +23,28 @@ return [
 
         'route_middleware' => [
             'admin' => 'Jet\AdminBlock\Middleware\AdminMiddleware@beforeHandle',
+        ],
+
+    ],
+
+    'between' => [
+
+        'global_middleware' => [
+            'Jet\Middleware\TranslationMiddleware@betweenHandle',
+        ],
+
+        'block_middleware' => [
+            'src/Blocks/AdminBlock/' => [
+                'Jet\AdminBlock\Middleware\AdminMiddleware@betweenHandle',
+            ],
+        ],
+
+        'class_middleware' => [
+
+        ],
+
+        'route_middleware' => [
+
         ],
 
     ],
@@ -38,7 +60,7 @@ return [
         ],
         
         'block_middleware' => [
-            'src/Blocks/AdminBlock/' => 'Jet\AdminBlock\Middleware\AdminMiddleware@afterHandle'
+
         ],
 
         'global_middleware' => [

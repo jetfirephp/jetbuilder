@@ -191,6 +191,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^favicon.ico$ %{ENV:JETFIRE_URI}public/img/favicon.ico [L]
 
 RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

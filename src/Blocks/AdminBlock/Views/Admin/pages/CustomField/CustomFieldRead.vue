@@ -252,7 +252,7 @@
                         resource: 'custom_fields_' + this.website_id,
                         value: {custom_field: this.custom_field}
                     }).then((response) => {
-                        if (response.data.resource !== undefined) {
+                        if (typeof response.data.resource !== 'undefined') {
                             this.custom_field = response.data.resource;
                         }
                     });

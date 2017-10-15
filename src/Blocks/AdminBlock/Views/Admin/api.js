@@ -10,7 +10,6 @@ export const log_api = {
 
 export const auth_api = {
     login: ADMIN_URL + '/auth/login/',
-    login_as_user: ADMIN_URL + '/auth/login-as-user/',
     logout: ADMIN_URL + '/auth/logout/',
     lost_password: ADMIN_URL + '/auth/lost-password/',
     reset_password: ADMIN_URL + '/auth/reset-password/'

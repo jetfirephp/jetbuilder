@@ -1,30 +1,27 @@
 <template>
-    <div class="lost-password-page">
-        <loading></loading>
-        <response></response>
-        <form>
-            <div class="row header">
-                <h1>Admin Webzy</h1>
-                <h2>Réinitialiser votre mot de passe</h2>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="email" type="email" v-model="email" required class="validate">
-                    <label for="email" data-error="Format incorrect">Votre adresse e-mail</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <a @keyup.enter="submit()" @click="submit()" class="full-width waves-effect waves-light btn-large">Valider</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 left-align">
-                    <router-link to="/login">Se connecter</router-link>
-                </div>
-            </div>
+    <div class="lost-password-page col-12">
 
-        </form>
+        <loading></loading>
+        <response class="mb20 w-400px mx-auto"></response>
+
+        <div class="card card-shadowed px-50 py-30 w-400px mx-auto" style="max-width: 100%">
+            <h5 class="text-uppercase">{{ $t("message.auth.recover_password") }}</h5>
+            <br>
+
+            <form data-provide="validation" class="form-type-material">
+                <div class="form-group">
+                    <input type="email" class="form-control validate" v-model="email" required id="email">
+                    <label for="email">{{ $t("message.form.email") }}</label>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <br>
+                <a @click="submit()" class="btn btn-bold btn-block btn-primary">{{ $t("message.form.submit") }}</a>
+
+                <router-link to="/login">Se connecter</router-link>
+
+            </form>
+        </div>
     </div>
 </template>
 
@@ -49,8 +46,9 @@
                 'lostPassword'
             ]),
             submit() {
-                if(document.getElementById('email').classList.contains('valid'))
+                if(!document.getElementById('email').classList.contains('is-invalid')) {
                     this.lostPassword(this.email);
+                }
             }
         }
 

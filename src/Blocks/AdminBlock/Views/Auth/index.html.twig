@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="login-page row min-h-fullscreen center-vh p-20 m-0">
+    <div class="col-12">
+
+        <response :response="response"></response>
+
+        <div class="card card-shadowed px-50 py-30 w-400px mx-auto" style="max-width: 100%">
+            <h5 class="text-uppercase">{{ 'Login' | trans }}</h5>
+            <br>
+
+            <form @sumit.prevent="submit" data-provide="validation" class="form-type-material" id="login-form">
+                <div class="form-group">
+                    <input id="email" type="email" v-model="auth.email" required class="form-control">
+                    <label class="require" for="email">{{ 'E-mail' | trans }}</label>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-group">
+                    <input id="password" type="password" v-model="auth.password" required class="form-control">
+                    <label class="require" for="password">{{ 'Password' | trans }}</label>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-group flexbox flex-column flex-md-row">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" v-model="auth.remember">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{ 'Stay connect' | trans }}</span>
+                    </label>
+
+                    <a class="text-muted hover-primary fs-13 mt-2 mt-md-0" href="{{ path('/auth/lost-password') }}">{{ 'Forgot password ?' | trans }}</a>
+                </div>
+
+                <div class="form-group">
+                    <button @click.prevent="submit()" class="btn btn-bold btn-block btn-primary">{{ 'Submit' | trans }}</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+    {% include 'Component/response.html.twig' %}
+
+    <script>
+        new Vue({
+            el: '#app',
+            delimiters: ['${', '}'],
+            data: function() {
+                return {
+                    auth: {
+                        email: null,
+                        password: null,
+                        remember: false
+                    },
+                    response: _app.response
+                }
+            },
+            methods: {
+                submit: function () {
+                    let o = this;
+                    this.$http.post("{{ path('/auth/login') }}", {
+                        email : this.auth.email,
+                        password : this.auth.password,
+                        remember : this.auth.remember
+                    }).then(function (response) {
+                        if(typeof response.data.status !== 'undefined' && response.data.status == 'succes'){
+
+                        }else {
+                            o.response = response.data;
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            }
+        })
+    </script>
+{% endblock %}

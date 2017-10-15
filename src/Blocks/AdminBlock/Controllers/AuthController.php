@@ -5,9 +5,7 @@ namespace Jet\AdminBlock\Controllers;
 use Jet\Models\Account;
 use Jet\AdminBlock\Requests\AuthRequest;
 use Jet\Models\Website;
-use Jet\Services\Admin;
 use Jet\Services\Auth;
-use JetFire\Framework\System\Controller;
 use JetFire\Framework\System\Mail;
 use JetFire\Framework\System\Request;
 
@@ -15,87 +13,61 @@ use JetFire\Framework\System\Request;
  * Class AuthController
  * @package Jet\AdminBlock\Controllers
  */
-class AuthController extends Controller
+class AuthController extends MainController
 {
-
-    use Admin;
-
     /**
      * @param Auth $auth
-     * @return mixed
+     * @return array
      */
     public function index(Auth $auth)
     {
-        $admin_url = $this->getAdminUrl($this->app);
-        $app_name = (isset($this->app->data['setting']['name'])) ? $this->app->data['setting']['name'] : 'JetBuilder';
         if ($auth->hasRemember()) {
             $account = Account::where('id', $auth->getRemember('id'))->where('token', $auth->getRemember('token'))->get(true);
             if (!is_null($account) && isset($account['id'])) {
                 $auth->log($account->_getTable());
-                /*$auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));*/
-                return $this->redirect()->url($admin_url);
+                return $this->redirect()->to('admin');
             }
         }
-        return $this->render('auth_layout', [
-            'app_name' => $app_name,
-            'admin_url' => $admin_url,
-            'locale' => $this->app->data['_locale']
-        ]);
+        return [];
     }
 
     /**
      * @param AuthRequest $request
      * @param Auth $auth
-     * @return array
+     * @return array|bool
      */
     public function login(AuthRequest $request, Auth $auth)
     {
-        $admin_domain = (isset($this->app->data['setting']['admin_domain'])) ? $this->app->data['setting']['admin_domain'] : '';
-        $target = ($auth->getSession()->has('redirect_url')) ? '#/' . $auth->getSession()->get('redirect_url') : '';
-        if ($auth->check()) {
-            return ['status' => 'success', 'target' => $admin_domain . $target];
-        } elseif ($auth->guest() && $request->method() == 'POST') {
-            $value = $request->only('email', 'password', 'remember');
-            $response = $request->validate('loginRules');
-            if ($response === true) {
-                $account = Account::where('email', $value['email'])->where('state', 1)->get(true);
-                if (!is_null($account) && isset($account['id'])) {
-                    $response = $request->validate(['password' => 'equal:' . $account['password'] . ',password_verify'], ['equal' => 'Mot de passe incorrect']);
-                    if ($response === true) {
-                        $auth->log($account->_getTable());
-                        $auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));
-                        if ($value['remember'] == "true") {
-                            $account['token'] = md5(uniqid(rand(), true));
-                            $auth->setRemember($account, 604800 * 4);
-                            $account->save();
+        if ($request->method() == 'POST') {
+            $admin_url = $this->getAdminUrl($this->app, '/dashboard');
+            $target = ($auth->getSession()->has('redirect_url')) ? '/' . $auth->getSession()->get('redirect_url') : '';
+            if ($auth->check()) {
+                return ['redirect' => $admin_url . $target];
+            } elseif ($auth->guest()) {
+                $value = $request->only('email', 'password', 'remember');
+                $response = $request->validate('loginRules');
+                if ($response === true) {
+                    $account = Account::where('email', $value['email'])->where('state', 1)->get(true);
+                    if (!is_null($account) && isset($account['id'])) {
+                        $response = $request->validate(['password' => 'equal:' . $account['password'] . ',password_verify'], ['equal' => 'Password not correct']);
+                        if ($response === true) {
+                            $auth->log($account->_getTable());
+                            $auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));
+                            if (isset($value['remember']) && $value['remember'] == "true") {
+                                $account['token'] = md5(uniqid(rand(), true));
+                                $auth->setRemember($account, 604800 * 4);
+                                $account->save();
+                            }
+                            return ['redirect' => $admin_url . $target];
                         }
-                        return ['status' => 'success', 'target' => $admin_domain . $target];
+                        return $response;
                     }
-                    return $response;
+                    $response = ['status' => 'error', 'message' => 'Account not found'];
                 }
-                $response = ['status' => 'error', 'message' => 'Account not found'];
+                return $response;
             }
-            return $response;
         }
-        return ['status' => 'error', 'message' => 'Erreur technique'];
-    }
-
-
-    /**
-     * @param Auth $auth
-     * @param $email
-     * @return array|bool
-     */
-    public function loginAsUser(Auth $auth, $email)
-    {
-        $account = Account::where('email', $email)->get(true);
-        if (!is_null($account) && isset($account['id'])) {
-            $auth->removeRemember();
-            $auth->log($account->_getTable());
-            $auth->getSession()->set('_auth_websites', Website::repo()->getAccountWebsites($account['id']));
-            return ['status' => 'success'];
-        }
-        return ['status' => 'error', 'message' => 'Impossible de se connecter en tant qu\'utilisateur'];
+        return ['status' => 'error', 'message' => 'Technical error'];
     }
 
     /**
@@ -117,13 +89,16 @@ class AuthController extends Controller
      */
     public function lostPassword(AuthRequest $request, Mail $mail)
     {
-        if ($request->method() == 'POST' && $request->has('email')) {
+        if ($request->method() == 'POST') {
+            if (!$request->has('email')) {
+                return ['status' => 'error', 'message' => 'Entrez votre adresse e-mail'];
+            }
             $email = $request->input('email');
             $account = Account::where('email', $email)->get(true);
             if (!is_null($account) && isset($account['id'])) {
-                
-                if($account['state'] == 0) return ['status' => 'error', 'message' => 'Votre compte n\'est pas actif. Veuillez contacter un administrateur.'];
-                
+
+                if ($account['state'] == 0) return ['status' => 'error', 'message' => 'Votre compte n\'est pas actif. Veuillez contacter un administrateur.'];
+
                 $token = md5(uniqid(rand(), true));
                 $account['token'] = $token;
                 $account['token_time'] = new \DateTime('tomorrow');
@@ -136,7 +111,7 @@ class AuthController extends Controller
             }
             return ['status' => 'error', 'message' => 'Désolé ! Nous n\'avons trouvé aucun compte associé à cette adresse e-mail'];
         }
-        return ['status' => 'error', 'message' => 'Entrez votre adresse e-mail'];
+        return $this->render('Auth/lost_password');
     }
 
     /**

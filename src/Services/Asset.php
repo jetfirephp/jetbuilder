@@ -2,7 +2,6 @@
 
 namespace Jet\Services;
 
-use Jet\Models\Website;
 use JetFire\Framework\App;
 
 
@@ -41,12 +40,24 @@ class Asset
     }
 
     /**
+     * @param string $path
+     * @return string
+     */
+    public function getBaseUrl($path = '')
+    {
+        $detail = $this->app->get('routing')->getRouter()->route->getDetail();
+        $prefix = isset($detail['prefix']) ? $detail['prefix'] : '';
+        return (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http') . '://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']) . ((isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] !== '80') ? ':' . $_SERVER['SERVER_PORT'] : '') . (is_null($path) ? $_SERVER['REQUEST_URI'] : str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']) . $prefix . '/' . trim($path, '/'));
+    }
+
+    /**
      * @param $value
      * @param $full_path
      * @return string
      */
-    public function getPublicPath($value, $full_path){
-        if(substr($value, 0, 4) === 'http' && strpos($value, '://') !== false) return $value;
+    public function getPublicPath($value, $full_path)
+    {
+        if (substr($value, 0, 4) === 'http' && strpos($value, '://') !== false) return $value;
         $blocks = $this->app->data['app']['blocks'];
         $path = ($full_path) ? $this->app->data['setting']['domain'] . WEBROOT : WEBROOT;
         foreach ($blocks as $block) {
@@ -62,25 +73,6 @@ class Asset
         return is_file(ROOT . '/public/' . $value) ? $path . 'public/' . $value : rtrim($path, '/') . $value;
     }
 
-    /**
-     * @param Website $website
-     * @param $value
-     * @param null $theme
-     * @return string
-     */
-    public function getThemePath(Website $website, $value, $theme = null){
-        $theme = is_null($theme) ? $this->getRecursiveThemeName($website) : $theme;
-        if(is_dir(ROOT. '/src/Themes/' . $theme . '/Resources/public/')) {
-            $dir = ROOT . '/src/Themes/' . $theme . '/Resources/public/';
-            $web_dir = WEBROOT . 'src/Themes/' . $theme . '/Resources/public/';
-            if (substr($value, -3) == '.js' && is_file($dir . 'js/' . $value)) return $web_dir . 'js/' . $value;
-            if (substr($value, -4) == '.css' && is_file($dir . 'css/' . $value)) return $web_dir . 'css/' . $value;
-            $ext = explode('.', $value);
-            if (in_array(end($ext), ['png', 'jpg', 'jpeg', 'gif', 'ico', 'svg']) && is_file($dir . 'img/' . $value)) return $web_dir . 'img/' . $value;
-            return is_file($dir . $value) ? $web_dir . $value : rtrim($web_dir, '/') . $value;
-        }
-        return $value;
-    }
 
     /**
      * @param $method
@@ -105,20 +97,5 @@ class Asset
         if (!isset($arguments[0])) $arguments[0] = null;
         return self::getInstance()->$params[0]($arguments[0], strtolower($params[1]));
     }
-
-    /**
-     * @param Website $website
-     * @return bool
-     */
-    private function getRecursiveThemeName(Website $website)
-    {
-        $theme = $website->getTheme();
-        $theme_website = $theme->getWebsite();
-
-        return ($theme_website->getId() != $website->getId())
-            ? $this->getRecursiveThemeName($theme_website)
-            : $theme->getName();
-    }
-
 
 }

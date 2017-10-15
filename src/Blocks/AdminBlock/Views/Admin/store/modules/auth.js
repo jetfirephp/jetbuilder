@@ -1,6 +1,6 @@
 import * as types from '../mutation-types'
 import Vue from 'vue'
-import {auth_api} from '../../api'
+import {auth_api} from '@admin/api'
 
 const state = {
     auth: {}

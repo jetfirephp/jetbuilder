@@ -68,7 +68,7 @@ return [
                     'init' => [],
                     'setAppRoutes' => [],
                     'setRouter' => ['#config.router', '#config.template'],
-                    'setMiddleware' => ['#config.router.middleware', '#app.middleware.before', '#app.middleware.after'],
+                    'setMiddleware' => ['#config.router.middleware', '#app.middleware'],
                     'setTemplateCallback' => ['#config.template']
                 ],
                 'instanceOf' => 'Jet\Services\AppProvider\AppRoutingProvider'

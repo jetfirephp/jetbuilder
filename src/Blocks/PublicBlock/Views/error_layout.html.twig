@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>{{ app_name }}</title>
+
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="your,keywords">
+    <meta name="description" content="{{ app_name }} 404">
+    <!-- END META -->
+
+    <link rel="icon" href="{{ asset('media/default/favicon.ico') }}">
+
+    <!-- BEGIN STYLESHEETS -->
+    <link href='{{ asset('admin/css/core.min.css') }}' rel='stylesheet' type='text/css'/>
+    <link href='{{ asset('admin/css/app.min.css') }}' rel='stylesheet' type='text/css'/>
+    <link href='{{ asset('admin/css/style.min.css') }}' rel='stylesheet' type='text/css'/>
+    <!-- END STYLESHEETS -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+{% block body %}{% endblock %}
+
+<!-- BEGIN JAVASCRIPT -->
+<script defer src="{{ asset('admin/js/core.min.js') }}"></script>
+<script defer src="{{ asset('admin/js/app.min.js') }}"></script>
+<script defer src="{{ asset('admin/js/script.min.js') }}"></script>
+<!-- END JAVASCRIPT -->
+
+</body>
+</html>

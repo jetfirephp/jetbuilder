@@ -38,10 +38,11 @@ class TranslationMiddleware
      */
     public function beforeHandle(Request $request, Response $response, Route $route)
     {
-        if($this->setLocale($this->app, $route, $request) == false) {
-            /** @var Response $response */
-            $response->setStatusCode(404);
-            return $response;
+        if ($this->setLocale($this->app, $route, $request) == false) {
+            return [
+                'call' => $this->app->data['app']['middleware']['after']['global_middleware'],
+                'response' => $response->setStatusCode(404)
+            ];
         }
         return true;
     }
@@ -58,34 +59,78 @@ class TranslationMiddleware
         $app->data['_locale'] = $app->data['_default_locale'];
         $params = $route->getTarget('params');
 
-        if(isset($route->getDetail()['keys'][':_lang_code']) && isset($params['locale_domain'])){
-            if(!isset($params['lang_codes'][$route->getDetail()['keys'][':_lang_code']])) return false;
+        if (isset($route->getDetail()['keys'][':_lang_code']) && isset($params['locale_domain'])) {
+            if (!isset($params['lang_codes'][$route->getDetail()['keys'][':_lang_code']])) return false;
             $app->data['_lang_code'] = $route->getDetail()['keys'][':_lang_code'];
             $app->data['_locale'] = $params['lang_codes'][$app->data['_lang_code']];
         }
 
-        $request->setLocale($app->data['_locale']) ;
+        $request->setLocale($app->data['_locale']);
         return true;
     }
 
     /**
      * @param Route $route
-     * @param Response $response
      * @param AppTranslationProvider $translator
      * @return Response
      */
-    public function afterHandle(Route $route, Response $response, AppTranslationProvider $translator)
+    public function afterHandle(Route $route, AppTranslationProvider $translator)
     {
-        if ($route->hasTarget('data') && isset($route->getTarget('data')['message'])) {
+        return is_array($data = $this->translate($route, $translator))
+            ? new JsonResponse($data)
+            : true;
+    }
+
+    /**
+     * @param Route $route
+     * @param AppTranslationProvider $translator
+     * @return Response
+     */
+    public function betweenHandle(Route $route, AppTranslationProvider $translator)
+    {
+        if(is_array($data = $this->translate($route, $translator))){
+            $route->addTarget('data', $data);
+        } 
+        return true;
+    }
+
+    /**
+     * @param Route $route
+     * @param AppTranslationProvider $translator
+     * @return Response
+     */
+    private function translate(Route $route, AppTranslationProvider $translator)
+    {
+        if($route->hasTarget('data') && isset($route->getTarget('data')['message'])) {
             $params = $route->getTarget('params');
             $placeholder = isset($route->getTarget('data')['placeholder']) ? $route->getTarget('data')['placeholder'] : [];
-            if(isset($this->app->data['_locale']) && isset($params['lang_codes'][$this->app->data['_lang_code']])) {
-                $content = $route->getTarget('data');
-                $content['message'] = $translator->translate($content['message'], $placeholder, $params['locale_domain'], $this->app->data['_locale']);
-                return $params['locale_domain'] == 'admin' ? new JsonResponse($content) : $response->setContent(json_encode($content));
+            if (isset($this->app->data['_locale']) && isset($params['lang_codes'][$this->app->data['_lang_code']])) {
+                $data = $route->getTarget('data');
+                $data['message'] = (is_array($data['message']))
+                    ? $this->translateMessage($translator, $data['message'], $placeholder, $params)
+                    : $translator->translate($data['message'], $placeholder, $params['locale_domain'], $this->app->data['_locale']);
+                return $data;
             }
         }
         return true;
     }
 
+
+    /**
+     * @param AppTranslationProvider $translator
+     * @param array $messages
+     * @param array $placeholder
+     * @param array $params
+     * @return array
+     */
+    private function translateMessage(AppTranslationProvider $translator, $messages = [], $placeholder = [], $params = [])
+    {
+        $new_messages = [];
+        foreach ($messages as $key => $message) {
+            $new_messages[$key] = (is_array($message))
+                ? $this->translateMessage($translator, $message, $placeholder, $params)
+                : $translator->translate($message, $placeholder, $params['locale_domain'], $this->app->data['_locale']);
+        }
+        return $new_messages;
+    }
 } 

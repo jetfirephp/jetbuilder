@@ -4,21 +4,18 @@ return [
 
     '/'	=> [
         'use' => 'AdminController@index',
-        'name' => 'admin.home',
+        'name' => 'admin',
+    ],
+    
+    '/auth/*' => [
+        'use' => 'AuthController@{method}',
+        'template' => 'Auth/{template}',
+        'method' => ['GET','POST'],
+        'ajax' => true,
     ],
 
     '/dashboard/*' => [
         'use' => 'AdminController@{method}',
-        'ajax' => true,
-    ],
-
-    '/auth' => [
-        'use' => 'AuthController@index',
-        'name' => 'admin.auth'
-    ],
-
-    '/auth/*' => [
-        'use' => 'AuthController@{method}',
         'ajax' => true,
     ],
 

@@ -21,14 +21,13 @@ return [
                     'lang_codes' => [
                         'en' => 'en_GB',
                         'fr' => 'fr_FR',
-                        'it' => 'it_IT',
                     ]
                 ]
             ]
         ],
         'locales' => [
             'admin' => [
-                /*'en_GB' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php',*/
+                'en_GB' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php',
                 'fr_FR' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/fr_FR.php',
             ]
         ]
@@ -38,14 +37,19 @@ return [
 
         'libs' => [
             'css' => [
-                'libs/bootstrap/bootstrap.css',
-                'libs/material/materialadmin.css',
-                'libs/material/material-design-iconic-font.min.css',
-                'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-                'https://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900',
+                'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i',
+                'admin/css/core.min.css',
+                'admin/css/app.min.css',
+                'admin/css/style.min.css',
+                'admin/css/admin.css'
             ],
             'js' => [
-                'https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyArNGSSl-KPS23l24EilPNQhfmEw_V8BtI&libraries=places&region=FR'
+                'admin/js/core.min.js',
+                'admin/js/app.min.js',
+                'admin/js/script.min.js',
+                'https://unpkg.com/vue',
+                'https://unpkg.com/axios/dist/axios.min.js',
+                'admin/js/admin.js',
             ]
         ],
 

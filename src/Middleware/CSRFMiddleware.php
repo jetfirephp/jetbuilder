@@ -2,14 +2,15 @@
 
 namespace Jet\Middleware;
 
+use Jet\Services\Admin;
 use JetFire\Framework\Providers\ResponseProvider;
 use JetFire\Framework\System\Request;
 use JetFire\Http\Session;
 use JetFire\Routing\ResponseInterface;
 
-class CSRFMiddleware extends MainMiddleware
+class CSRFMiddleware
 {
-
+    use Admin;
     /**
      * @var
      */

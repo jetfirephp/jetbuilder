@@ -3,12 +3,10 @@
 namespace Jet\AdminBlock\Middleware;
 
 use Jet\AdminBlock\Controllers\AuthController;
-use Jet\Middleware\MainMiddleware;
+use Jet\Services\Admin;
 use Jet\Services\Auth;
 use JetFire\Framework\App;
-use JetFire\Framework\Providers\ResponseProvider;
-use JetFire\Framework\Providers\SessionProvider;
-use JetFire\Framework\System\JsonResponse;
+use JetFire\Framework\System\Redirect;
 use JetFire\Framework\System\Request;
 use JetFire\Routing\ResponseInterface;
 use JetFire\Routing\Route;
@@ -17,45 +15,69 @@ use JetFire\Routing\Route;
  * Class Admin
  * @package Jet\AdminBlock\Middleware
  */
-class AdminMiddleware extends MainMiddleware
+class AdminMiddleware
 {
 
-    /**
-     * @var
-     */
-    private $session;
+    use Admin;
 
     /**
-     * @param App $app
-     * @param Route $route
      * @param Request $request
-     * @param SessionProvider $sessionProvider
-     * @param ResponseProvider $responseProvider
+     * @param Route $route
+     * @param Redirect $redirect
+     * @param App $app
      * @param Auth $auth
      * @return bool|ResponseInterface
      */
-    public function beforeHandle(App $app, Route $route, Request $request, SessionProvider $sessionProvider, ResponseProvider $responseProvider, Auth $auth)
+    public function beforeHandle(Request $request, Route $route, Redirect $redirect, App $app, Auth $auth)
     {
-        $this->session = $sessionProvider->getSession();
-        $redirect = $responseProvider->getRedirect();
-        $admin_url = $this->getAdminUrl($app);
-
-        if ($request->has('redirect_url') && $auth->check()) {
-            return $redirect->url($admin_url . '#/' . $request->get('redirect_url'));
-        }
-
         if ($auth->guest() && $route->getTarget('controller') != AuthController::class) {
-            if ($request->has('redirect_url')) {
-                $this->session->set('redirect_url', $request->get('redirect_url'));
-            }
-            return $redirect->to('admin.auth', ['_lang_code' => $app->data['_lang_code']]);
+            return $redirect->url($this->getAdminUrl($app, '/auth'));
         }
 
-        if ($auth->check() && $route->getTarget('controller') == AuthController::class && !in_array($route->getTarget('action'), ['logout', 'getAuth', 'loginAsUser'])) {
-            return $redirect->to('admin.home', ['_lang_code' => $app->data['_lang_code']]);
+        if ($auth->check() && $route->getTarget('controller') == AuthController::class && !in_array($route->getTarget('action'), ['logout', 'getAuth'])) {
+            return $redirect->url($this->getAdminUrl($app, '/dashboard'));
+        }
+        
+        if($request->wantsJson()){
+            $_POST = $request->json()->all();
+            $request->request->add($request->json()->all());
         }
         
         return true;
     }
-    
+
+
+    /**
+     * @param Request $request
+     * @param Redirect $redirect
+     * @param Route $route
+     * @param App $app
+     * @return bool
+     */
+    public function betweenHandle(Request $request, Redirect $redirect, Route $route, App $app)
+    {
+        if($route->hasTarget('data')) {
+
+            if($request->wantsJson()){
+                return true;
+            }
+
+            if(isset($route->getTarget('data')['redirect'])){
+                $params = isset($route->getTarget('data')['redirect_with']) ? $route->getTarget('data')['redirect_with'] : [];
+                $code = isset($route->getTarget('data')['redirect_code']) ? $route->getTarget('data')['redirect_code'] : 302;
+                return $redirect->to($route->getTarget('data')['redirect'], $params, $code);
+            }
+
+            $admin_url = $this->getAdminUrl($app);
+            $app_name = (isset($app->data['setting']['name'])) ? $app->data['setting']['name'] : 'JetBuilder';
+            $route->addTarget('data', array_merge([
+                'app_name' => $app_name,
+                'admin_url' => $admin_url,
+                'locale' => $app->data['_locale'],
+                'libs' => $app->data['admin']['libs']
+            ], $route->getTarget('data')));
+            
+        }
+        return true;
+    }
 }

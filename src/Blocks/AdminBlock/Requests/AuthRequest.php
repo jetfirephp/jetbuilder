@@ -8,9 +8,10 @@ class AuthRequest extends Request
 {
 
     public static $messages = [
-        'required' => 'Tout les champs précédé d\'un astérix doivent être remplis',
-        'noWhitespace' => 'L\'identifiant et le mot de passe ne doivent pas contenir d\'espace',
-        'email' => 'L\'email n\'est pas au bon format'
+        'required:email' => 'E-mail is required',
+        'required:password' => 'Password is required',
+        'noWhitespace' => 'Password cannot contain whitespace',
+        'email' => 'Invalid email format'
     ];
 
     public static function loginRules()
@@ -18,7 +19,7 @@ class AuthRequest extends Request
         return [
             'email' => 'required|email',
             'password' => 'required|noWhitespace',
-            'remember' => 'required|boolean'
+            'remember' => 'optional|boolean'
         ];
     }
 

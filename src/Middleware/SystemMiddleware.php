@@ -16,10 +16,11 @@ class SystemMiddleware
 {
 
     private $response_code_templates = [
-        404 => 'Response/404.html.twig',
-        405 => 'Response/405.html.twig',
+        401 => 'Response/400.html.twig',
+        404 => 'Response/400.html.twig',
+        405 => 'Response/400.html.twig',
         500 => 'Response/500.html.twig',
-        503 => 'Response/503.html.twig',
+        503 => 'Response/500.html.twig',
     ];
 
     /**
@@ -32,13 +33,19 @@ class SystemMiddleware
     public function beforeHandle(Request $request, Response $response, App $app, Route $route)
     {
         $domain = ($request->getServer()->has('REQUEST_SCHEME') ? $request->getServer()->get('REQUEST_SCHEME') : 'http') . '://' . $request->getServer()->get('SERVER_NAME');
+        $error = false;
         if($this->canAccessDomain($domain, $app, $route) == false){
+            $error = true;
+            $response->setStatusCode(404);
+        }
+        if(empty($route->getTarget('template')) && !$request->headers->has('X-CSRF-TOKEN')){
+            $error = true;
+            $response->setStatusCode(405);
+        }
+        if($error){
             return [
-                'call' => [
-                    'Jet\Middleware\TranslationMiddleware@afterHandle',
-                    'Jet\Middleware\SystemMiddleware@afterHandle'
-                ],
-                'response' => $response->setStatusCode(404)
+                'call' => $app->data['app']['middleware']['after']['global_middleware'],
+                'response' => $response
             ];
         }
         $this->bootBlock($app, $route);
@@ -87,8 +94,9 @@ class SystemMiddleware
     {
         if (isset($this->response_code_templates[$response->getStatusCode()])) {
             $view->setPath(ROOT . '/src/Blocks/PublicBlock/Views');
-            $view->setExtension($app->data['template_extension']);
+            $view->addData('response_code', $response->getStatusCode());
             $view->setTemplate($this->response_code_templates[$response->getStatusCode()]);
+            $view->setExtension($app->data['template_extension']);
             $response->setContent($app->get('template')->getTemplate()->render($view));
             return $response;
         }

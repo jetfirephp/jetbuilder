@@ -14,12 +14,6 @@ use JetFire\Framework\System\Controller;
  */
 class AdminController extends Controller
 {
-    const SUPER_ADMIN_LEVEL = 0;
-    const ADMIN_LEVEL = 1;
-    const WEBMASTER_LEVEL = 2;
-    const EDITOR_LEVEL = 3;
-    const USER_LEVEL = 4;
-
     /**
      * @param Auth $auth
      * @return mixed
