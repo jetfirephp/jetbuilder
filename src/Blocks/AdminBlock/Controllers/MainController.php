@@ -2,7 +2,7 @@
 
 namespace Jet\AdminBlock\Controllers;
 
-use Jet\Services\Admin;
+use Jet\AdminBlock\Services\Admin;
 use JetFire\Framework\System\Controller;
 
 /**

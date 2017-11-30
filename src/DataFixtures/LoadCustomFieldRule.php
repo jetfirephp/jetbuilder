@@ -4,10 +4,12 @@ namespace Jet\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Jet\Models\CustomFieldRule;
+use Jet\Services\LoadFixture;
 
 class LoadCustomFieldRule extends AbstractFixture
 {
+    use LoadFixture;
+
     protected $data = [
         'global_rule' => [
             'title' => 'Global',
@@ -55,16 +57,6 @@ class LoadCustomFieldRule extends AbstractFixture
 
     public function load(ObjectManager $manager)
     {
-        foreach($this->data as $key => $data) {
-            $cf = (CustomFieldRule::where('name', $data['name'])->count() == 0) ? new CustomFieldRule() : CustomFieldRule::findOneByName($data['name']);
-            $cf->setTitle($data['title']);
-            $cf->setName($data['name']);
-            $cf->setCallback($data['callback']);
-            $cf->setType($data['type']);
-            $cf->setReplaceTable($data['table']);
-            $this->setReference($key, $cf);
-            $manager->persist($cf);
-        }
-        $manager->flush();
+        $this->loadCustomFieldRule($manager);
     }
 }

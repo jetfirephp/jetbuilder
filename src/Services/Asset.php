@@ -17,7 +17,7 @@ class Asset
      */
     private $app;
     /**
-     * @var Auth
+     * @var Asset
      */
     private static $instance;
 
@@ -32,7 +32,7 @@ class Asset
     }
 
     /**
-     * @return Auth
+     * @return Asset
      */
     public static function getInstance()
     {
@@ -73,6 +73,43 @@ class Asset
         return is_file(ROOT . '/public/' . $value) ? $path . 'public/' . $value : rtrim($path, '/') . $value;
     }
 
+    /**
+     * @param array $libs
+     * @param $type
+     */
+    public function combineAsset($libs = [], $type)
+    {
+        $minify = $this->app->get('minify');
+        $path = isset($libs['basePath']) ? 'b=' . $libs['basePath'] . $type . '&f=' : 'f=';
+        foreach ($libs[$type] as $lib) {
+            if (substr($lib, 0, 4) === 'http') {
+                $this->render($lib, $type);
+            } else if ($this->app->data['setting']['minify'] == true) {
+                $path .= $lib . ',';
+            } else {
+                $this->render($this->app->get('Jet\Services\Asset')->getPublicPath($lib, false), $type);
+            }
+        }
+        if($this->app->data['setting']['minify'] == true) {
+            $path = ($this->app->data['setting']['environment'] == 'dev')
+                ? rtrim('/min/?' . $path, ',')
+                : $minify->build_uri(rtrim($path, ','), $type);
+            $this->render($path, $type);
+        }
+    }
+
+    /**
+     * @param $path
+     * @param $type
+     */
+    public function render($path, $type)
+    {
+        if ($type == 'css') {
+            echo '<link href="' . $path . '" rel="stylesheet" type="text/css"/>';
+        } elseif ($type == 'js') {
+            echo '<script src="' . $path . '"></script>';
+        }
+    }
 
     /**
      * @param $method

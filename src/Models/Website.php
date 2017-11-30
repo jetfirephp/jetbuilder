@@ -63,7 +63,7 @@ class Website extends Model implements \JsonSerializable
      */
     protected $state = 1;
     /**
-     * @Column(type="json", nullable=true)
+     * @Column(type="json_array", nullable=true)
      */
     protected $data;
     /**
@@ -80,7 +80,6 @@ class Website extends Model implements \JsonSerializable
      */
     public function __construct()
     {
-        $this->modules = new ArrayCollection();
         $this->languages = new ArrayCollection();
     }
 

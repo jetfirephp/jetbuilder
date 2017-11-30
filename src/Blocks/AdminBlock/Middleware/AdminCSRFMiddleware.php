@@ -3,8 +3,8 @@
 namespace Jet\AdminBlock\Middleware;
 
 use Jet\AdminBlock\Controllers\AuthController;
-use Jet\Services\Admin;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Admin;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\App;
 use JetFire\Framework\Providers\ResponseProvider;
 use JetFire\Framework\System\Request;
@@ -42,7 +42,7 @@ class AdminCSRFMiddleware
         if($request->wantsJson()) {
             $route->addTarget('dispatcher', $route->getTarget('dispatcher')[0]);
         }
-
+        // check for csrf token
         if ($request->method() != 'GET' && ($request->has('_token') || $request->headers->has('X-CSRF-TOKEN'))) {
             $token = '';
             if ($request->has('_token')) $token = $request->get('_token');

@@ -3,38 +3,30 @@ namespace Jet\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Jet\Models\Template;
+use Jet\Services\LoadFixture;
 
 class LoadTemplate extends AbstractFixture
 {
+    use LoadFixture;
 
     protected $data = [
         'default_layout' => [
             'name' => 'DefaultGlobalFileLayout',
             'title' => 'Template de base',
-            'content' => 'index',
-            'website' => null,
-            'category' => 'layout',
-            'scope' => 'global',
-            'type' => 'file'
+            'path' => 'index',
+            'website' => null
         ],
         'default_page_layout' => [
             'name' => 'DefaultPageFileLayout',
             'title' => 'Template de base pour une page',
-            'content' => 'page',
-            'website' => null,
-            'category' => 'layout',
-            'scope' => 'global',
-            'type' => 'file'
+            'path' => 'page',
+            'website' => null
         ],
         'default_website_layout' => [
             'name' => 'DefaultGlobalFileWebsiteLayout',
             'title' => 'Template de base html',
-            'content' => 'default_layout',
-            'website' => null,
-            'category' => 'layout',
-            'scope' => 'global',
-            'type' => 'file'
+            'path' => 'default_layout',
+            'website' => null
         ]
     ];
 
@@ -43,18 +35,7 @@ class LoadTemplate extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach($this->data as $key => $data){
-            $template = (Template::where('name', $data['name'])->count() == 0) ? new Template() : Template::findOneByName($data['name']);
-            $template->setName($data['name']);
-            $template->setTitle($data['title']);
-            $template->setContent($data['content']);
-            $template->setCategory($data['category']);
-            $template->setScope($data['scope']);
-            $template->setType($data['type']);
-            $this->setReference($key,$template);
-            $manager->persist($template);
-        }
-        $manager->flush();
+        $this->loadTemplate($manager);
     }
 
 }

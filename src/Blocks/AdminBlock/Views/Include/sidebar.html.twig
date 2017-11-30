@@ -1,0 +1,52 @@
+<!-- Sidebar -->
+<aside class="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg">
+    <header class="sidebar-header">
+        <span class="logo">
+          {{ app_name }}
+        </span>
+        <span class="sidebar-toggle-fold"></span>
+    </header>
+
+    <nav class="sidebar-navigation">
+        <ul class="menu">
+            {% for category, items in hook['left_sidebar'] %}
+                {% if 'divider@' in category %}
+                    <li class="menu-divider"></li>
+                {% else %}
+                    <li class="menu-category">{{ category }}</li>
+                {% endif %}
+                {% for title, item in items %}
+                    {% if item['link'] is defined %}
+                        <li class="menu-item">
+                            <a class="menu-link" href="{{ item['link'] }}">
+                                <span class="icon {{ item['icon'] }}"></span>
+                                <span class="title">{{ title }}</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="menu-item">
+                            <a class="menu-link" href="#">
+                                <span class="icon {{ item['icon'] }}"></span>
+                                <span class="title">{{ title }}</span>
+                                <span class="arrow"></span>
+                            </a>
+
+                            <ul class="menu-submenu">
+                                {% for label, link in item['items'] %}
+                                <li class="menu-item">
+                                    <a class="menu-link" href="{{ link }}">
+                                        <span class="dot"></span>
+                                        <span class="title">{{ label }}</span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </nav>
+
+</aside>
+<!-- END Sidebar -->

@@ -29,6 +29,11 @@ class Status extends Model implements \JsonSerializable
      * @Column(type="smallint")
      */
     protected $level;
+    /**
+     * @ManyToOne(targetEntity="Website")
+     * @JoinColumn(name="website_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     */
+    protected $website;
 
     /**
      * @return mixed
@@ -76,6 +81,22 @@ class Status extends Model implements \JsonSerializable
     public function setLevel($level)
     {
         $this->level = $level;
+    }
+
+    /**
+     * @return Website|null
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param Website|null $website
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
     }
 
     /**

@@ -7,7 +7,7 @@ use Jet\Models\AdminCustomField;
 use Jet\Models\CustomField;
 use Jet\Models\CustomFieldRule;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Validation\Validation;
 
 /**

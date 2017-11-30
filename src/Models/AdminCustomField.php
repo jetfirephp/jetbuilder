@@ -63,11 +63,11 @@ class AdminCustomField extends Model implements \JsonSerializable
      */
     protected $custom_field;
     /**
-     * @Column(type="json")
+     * @Column(type="json_array")
      */
     protected $data = [];
     /**
-     * @Column(type="json")
+     * @Column(type="json_array")
      */
     protected $content = [];
 

@@ -28,15 +28,15 @@ class Route extends Model implements \JsonSerializable
      */
     protected $name;
     /**
-     * @Column(type="json")
+     * @Column(type="json_array")
      */
     protected $method = ["GET"];
     /**
-     * @Column(type="json", nullable=true)
+     * @Column(type="json_array", nullable=true)
      */
     protected $arguments;
     /**
-     * @Column(type="json", nullable=true)
+     * @Column(type="json_array", nullable=true)
      */
     protected $middlewares;
     /**

@@ -3,10 +3,12 @@ namespace Jet\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Jet\Models\Section;
+use Jet\Services\LoadFixture;
 
 class LoadSection extends AbstractFixture
 {
+
+    use LoadFixture;
 
     protected $data = [
         'basic_section' => [
@@ -22,16 +24,6 @@ class LoadSection extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach($this->data as $key => $data) {
-            $section = (Section::where('container', $data['container'])->count() == 0) 
-                ? new Section() : Section::findOneByContainer($data['container']);
-            $section->setSectionId($data['section_id']);
-            $section->setSectionClass($data['section_class']);
-            $section->setStyle($data['style']);
-            $section->setContainer($data['container']);
-            $this->addReference($key, $section);
-            $manager->persist($section);
-        }
-        $manager->flush();
+        $this->loadSection($manager);
     }
 }

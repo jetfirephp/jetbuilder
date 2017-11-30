@@ -1,32 +1,24 @@
 <?php
 namespace Jet\DataFixtures;
 
-use Jet\Models\Status;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Jet\Services\LoadFixture;
 
 class LoadStatus extends AbstractFixture
 {
 
+    use LoadFixture;
+
     protected $data = [
-        '_super_admin' => [
-            'super_admin', 0
-        ],
-        '_admin' => [
-            'admin', 1
-        ],
-        '_webmaster' => [
-            'webmaster', 2
-        ],
-        '_commercial' => [
-            'commercial', 2
-        ],
         '_user' => [
-            'user', 4
+            'role' => 'user',
+            'level' => -1
         ],
-        '_ikosoft' => [
-            'ikosoft', 3
-        ],
+        '_super_admin' => [
+            'role' => 'super_admin',
+            'level' => 0
+        ]
     ];
 
     /**
@@ -34,14 +26,7 @@ class LoadStatus extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        foreach($this->data as $key => $role){
-            $status = (Status::where('role', $role[0])->count() == 0) ? new Status() : Status::findOneByRole($role[0]);
-            $status->setRole($role[0]);
-            $status->setLevel($role[1]);
-            $manager->persist($status);
-            $this->addReference($key, $status);
-        }
-        $manager->flush();
+        $this->loadStatus($manager);
     }
     
 }

@@ -33,19 +33,11 @@ class SystemMiddleware
     public function beforeHandle(Request $request, Response $response, App $app, Route $route)
     {
         $domain = ($request->getServer()->has('REQUEST_SCHEME') ? $request->getServer()->get('REQUEST_SCHEME') : 'http') . '://' . $request->getServer()->get('SERVER_NAME');
-        $error = false;
         if($this->canAccessDomain($domain, $app, $route) == false){
-            $error = true;
             $response->setStatusCode(404);
-        }
-        if(empty($route->getTarget('template')) && !$request->headers->has('X-CSRF-TOKEN')){
-            $error = true;
-            $response->setStatusCode(405);
-        }
-        if($error){
             return [
                 'call' => $app->data['app']['middleware']['after']['global_middleware'],
-                'response' => $response
+                'response' => $response->setStatusCode(404)
             ];
         }
         $this->bootBlock($app, $route);
@@ -85,13 +77,18 @@ class SystemMiddleware
     }
 
     /**
+     * @param Request $request
      * @param Response $response
+     * @param Route $route
      * @param App $app
      * @param View $view
      * @return bool
      */
-    public function afterHandle(Response $response, App $app, View $view)
+    public function afterHandle(Request $request, Response $response, Route $route, App $app, View $view)
     {
+        if($route->hasTarget('data') && empty($route->getTarget('template')) && !$request->headers->has('X-CSRF-TOKEN')){
+            $response->setStatusCode(405);
+        }
         if (isset($this->response_code_templates[$response->getStatusCode()])) {
             $view->setPath(ROOT . '/src/Blocks/PublicBlock/Views');
             $view->addData('response_code', $response->getStatusCode());

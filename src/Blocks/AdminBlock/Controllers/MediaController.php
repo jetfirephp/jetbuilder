@@ -8,7 +8,7 @@ use Jet\AdminBlock\Requests\MediaRequest;
 use Jet\Models\Account;
 use Jet\Models\Media;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\Providers\EventProvider;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;

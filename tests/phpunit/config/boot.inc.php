@@ -189,7 +189,7 @@ return [
         //| Your custom providers             |
         //|-----------------------------------|
         'auth' => [
-            'use' => 'Jet\Services\Auth',
+            'use' => 'Jet\AdminBlock\Services\Auth',
             'rule' => [
                 'shared' => true,
             ],

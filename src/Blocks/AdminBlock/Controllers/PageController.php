@@ -9,7 +9,7 @@ use Jet\Models\Page;
 use Jet\Models\Route;
 use Jet\Models\Template;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\Providers\EventProvider;
 
 /**

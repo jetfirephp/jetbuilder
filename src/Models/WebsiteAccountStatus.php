@@ -27,13 +27,13 @@ class WebsiteAccountStatus extends Model implements \JsonSerializable
      */
     protected $website;
     /**
-     * @ManyToOne(targetEntity="Account", inversedBy="websites")
+     * @ManyToOne(targetEntity="Account")
      * @JoinColumn(name="account_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $account;
     /**
-     * @ManyToOne(targetEntity="WebsiteStatus")
-     * @JoinColumn(name="website_status_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ManyToOne(targetEntity="Status")
+     * @JoinColumn(name="status_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $status;
     /**
@@ -91,7 +91,7 @@ class WebsiteAccountStatus extends Model implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return Status
      */
     public function getStatus()
     {
@@ -99,7 +99,7 @@ class WebsiteAccountStatus extends Model implements \JsonSerializable
     }
 
     /**
-     * @param WebsiteStatus $status
+     * @param Status $status
      */
     public function setStatus($status)
     {

@@ -7,7 +7,7 @@ use Jet\Models\Media;
 use Jet\Models\Profession;
 use Jet\Models\Theme;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 /**
  * Class ThemeController

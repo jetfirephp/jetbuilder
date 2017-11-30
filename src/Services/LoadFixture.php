@@ -8,10 +8,12 @@ use Jet\Models\AdminCustomField;
 use Jet\Models\Content;
 use Jet\Models\CustomField;
 use Jet\Models\CustomFieldRule;
+use Jet\Models\Language;
 use Jet\Models\Media;
 use Jet\Models\Page;
 use Jet\Models\Route;
 use Jet\Models\Section;
+use Jet\Models\Status;
 use Jet\Models\Template;
 use Jet\Models\Theme;
 use Jet\Models\Website;
@@ -20,8 +22,7 @@ use Jet\Models\Website;
  * Class LoadFixture
  * @package Jet\Services
  */
-trait LoadFixture
-{
+trait LoadFixture{
 
     protected $customFieldCallback = [
         'repeater' => 'getCustomFieldRepeater',
@@ -64,24 +65,17 @@ trait LoadFixture
         $this->contentCallback[$key] = $callback;
     }
 
-
     /**
      * @param ObjectManager $manager
      */
-    public function loadSociety(ObjectManager $manager)
+    public function loadStatus(ObjectManager $manager)
     {
-        foreach ($this->data as $key => $data) {
-            $account = ($this->hasReference($data['account'])) ? $this->getReference($data['account']) : Account::findOneByEmail($data['account']);
-            $address = ($this->hasReference($data['address'])) ? $this->getReference($data['address']) : null;
-            $society = (Society::where('name', $data['name'])->count() == 0)
-                ? new Society() : Society::findOneByName($data['name']);
-            $society->setName($data['name']);
-            $society->setEmail($data['email']);
-            $society->setPhone($data['phone']);
-            $society->setAccount($account);
-            $society->setAddress($address);
-            $this->setReference($data['name'], $society);
-            $manager->persist($society);
+        foreach($this->data as $key => $role){
+            $status = (Status::where('role', $role['role'])->count() == 0) ? new Status() : Status::findOneByRole($role['role']);
+            $status->setRole($role['role']);
+            $status->setLevel($role['level']);
+            $manager->persist($status);
+            $this->addReference($key, $status);
         }
         $manager->flush();
     }
@@ -101,7 +95,6 @@ trait LoadFixture
             $account->setPhone($data['phone']);
             $account->setPhoto($this->getReference($data['photo']));
             $account->setState($data['state']);
-            $account->setStatus($this->getReference($data['status']));
 
             if (isset($data['medias'])) {
                 foreach ($data['medias'] as $media) {
@@ -152,8 +145,7 @@ trait LoadFixture
             $website = (Website::where('domain', $data['domain'])->count() == 0)
                 ? new Website() : Website::findOneByDomain($data['domain']);
             $website->setTheme($this->getReference($data['theme']));
-            $website->setSociety($this->getReference($data['society']));
-            $website->setExpirationDate(new \DateTime($data['expiration_date']));
+            $website->setDefaultLanguage($this->getReference($data['default_language']));
 
             if ($this->hasReference($data['layout']))
                 $website->setLayout($this->getReference($data['layout']));
@@ -161,14 +153,6 @@ trait LoadFixture
                 $layout = Template::findOneByName($data['layout']);
                 $website->setLayout($layout);
             }
-
-            $website->setRenderSystem($data['render_system']);
-            $modules = [];
-
-            $mods = ModuleCategory::findBy(['slug' => $data['modules']]);
-            foreach ($mods as $module)
-                $modules[] = $module->getId();
-            $website->setModules($modules);
 
             foreach ($data['templates'] as $template) {
                 /** @var Template $tpl */
@@ -185,12 +169,19 @@ trait LoadFixture
                 $manager->persist($md);
             }
 
+            foreach ($data['languages'] as $language) {
+                /** @var Language $lang */
+                $lang = ($this->hasReference($language))
+                    ? $this->getReference($language) : Language::findOneByCode($language);
+                $website->addLanguage($lang);
+            }
+
             if (isset($data['data'])) {
                 $data['data'] = $this->replaceData($data['data']);
                 $website->setData($data['data']);
             }
 
-            $website->setDomain($data['domain']);
+            $website->setUrl($data['url']);
             (isset($data['state'])) ? $website->setState($data['state']) : $website->setState(-1);
             $this->setReference($key, $website);
             $manager->persist($website);
@@ -201,84 +192,33 @@ trait LoadFixture
 
     /**
      * @param ObjectManager $manager
-     * @param $theme
-     * @param $website
-     */
-    public function setThemeWebsite(ObjectManager $manager, $theme, $website)
-    {
-        /** @var Theme $theme */
-        $theme = $this->getReference($theme);
-        $theme->setWebsite($this->getReference($website));
-        $manager->persist($theme);
-        $manager->flush();
-    }
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function replaceWebsiteData(ObjectManager $manager)
-    {
-        foreach ($this->data as $key => $data) {
-            /** @var Website $website */
-            $website = ($this->hasReference($key)) ? $this->getReference($key) : Website::findOneByDomain($key);
-            $website->setData($this->replaceData($data['data']));
-            $manager->persist($website);
-        }
-        $manager->flush();
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    private function replaceData($data)
-    {
-        if (isset($data['parent_exclude'])) {
-            foreach ($data['parent_exclude'] as $index => $exclude) {
-                if (is_array($exclude)) {
-                    foreach ($exclude as $key => $exc) {
-                        $data['parent_exclude'][$index][$key] = ($this->hasReference($exc)) ? $this->getReference($exc)->getId() : $exc;
-                    }
-                }
-            }
-            $replaces = [];
-            if (isset($data['parent_replace'])) {
-                foreach ($data['parent_replace'] as $index => $replace) {
-                    if (is_array($replace)) {
-                        foreach ($replace as $key => $exc) {
-                            $key = ($this->hasReference($key)) ? $this->getReference($key)->getId() : $key;
-                            $replaces[$index][$key] = ($this->hasReference($exc)) ? $this->getReference($exc)->getId() : $exc;
-                        }
-                    }
-                }
-                $data['parent_replace'] = $replaces;
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * @param ObjectManager $manager
      */
     public function loadTheme(ObjectManager $manager)
     {
         foreach ($this->data as $data) {
             $theme = (Theme::where('name', $data['name'])->count() == 0) ? new Theme() : Theme::findOneByName($data['name']);
             $theme->setName($data['name']);
-            foreach ($data['professions'] as $profession) {
-                $profession = ($this->hasReference($profession))
-                    ? $this->getReference($profession)
-                    : Profession::findOneBySlug($profession);
-                $theme->addProfession($profession);
-            }
-            $theme->setThumbnail($this->getReference($data['thumbnail']));
-            $theme->setState($data['state']);
-            if (isset($data['website'])) {
-                $website = ($this->hasReference($data['website'])) ? $this->getReference($data['website']) : Website::findOneByDomain($data['website']);
-                $theme->setWebsite($website);
-            }
+            $theme->setDirectory($data['directory']);
             $this->setReference($data['name'], $theme);
             $manager->persist($theme);
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @param ObjectManager $manager
+     */
+    public function loadSection(ObjectManager $manager)
+    {
+        foreach($this->data as $key => $data) {
+            $section = (Section::where('container', $data['container'])->count() == 0)
+                ? new Section() : Section::findOneByContainer($data['container']);
+            $section->setSectionId($data['section_id']);
+            $section->setSectionClass($data['section_class']);
+            $section->setStyle($data['style']);
+            $section->setContainer($data['container']);
+            $this->addReference($key, $section);
+            $manager->persist($section);
         }
         $manager->flush();
     }
@@ -294,31 +234,12 @@ trait LoadFixture
                 : Template::findOneByName($data['name']);
             $template->setName($data['name']);
             $template->setTitle($data['title']);
-            $template->setContent($data['content']);
-            $template->setCategory($data['category']);
-            $template->setScope($data['scope']);
-            $template->setType($data['type']);
-            if (isset($data['website']) && !is_null($data['website']))
+            $template->setPath($data['path']);
+            if (isset($data['website']) && !is_null($data['website'])) {
                 $template->setWebsite($this->getReference($data['website']));
+            }
             $this->setReference($key, $template);
             $manager->persist($template);
-        }
-        $manager->flush();
-    }
-
-    /**
-     * @param ObjectManager $manager
-     */
-    public function loadLibrary(ObjectManager $manager)
-    {
-        foreach ($this->data as $data) {
-            $lib = (Library::where('path', $data['path'])->count() == 0)
-                ? new Library() : Library::findOneByPath($data['path']);
-            $lib->setName($data['name']);
-            $lib->setPath($data['path']);
-            $lib->setType($data['type']);
-            $lib->setCategory($data['category']);
-            $manager->persist($lib);
         }
         $manager->flush();
     }
@@ -337,8 +258,9 @@ trait LoadFixture
             $media->setType($data['type']);
             $media->setSize($data['size']);
             $media->setAlt($data['alt']);
-            if (isset($data['website']) && !is_null($data['website']))
+            if (isset($data['website']) && !is_null($data['website'])) {
                 $media->setWebsite($this->getReference($data['website']));
+            }
             $manager->persist($media);
             $this->addReference($data['path'], $media);
         }
@@ -355,60 +277,16 @@ trait LoadFixture
                 ? new Route() : Route::findOneByName($data['name']);
             $route->setUrl($data['url']);
             $route->setName($data['name']);
-            $route->setArgument($data['argument']);
-            $route->setMiddleware($data['middleware']);
+            $route->setArguments($data['argument']);
+            $route->setMiddlewares($data['middleware']);
             $route->setSubdomain($data['subdomain']);
-            if (isset($data['position']))
-                $route->setPosition($data['position']);
             if (isset($data['website']) && !is_null($data['website'])) {
                 $website = ($this->hasReference($data['website'])) ? $this->getReference($data['website']) : Website::findOneByDomain($data['website']);
                 $route->setWebsite($website);
             }
+            if (isset($data['position'])) $route->setPosition($data['position']);
             $this->addReference($data['name'], $route);
             $manager->persist($route);
-        }
-        $manager->flush();
-    }
-
-    /**
-     * @param ObjectManager $manager
-     */
-    function loadModuleCategory(ObjectManager $manager)
-    {
-        $cat = (ModuleCategory::where('name', $this->data['name'])->count() == 0)
-            ? new ModuleCategory()
-            : ModuleCategory::findOneByName($this->data['name']);
-        $cat->setName($this->data['name']);
-        $cat->setTitle($this->data['title']);
-        $cat->setSlug($this->data['slug']);
-        $cat->setIcon($this->data['icon']);
-        $cat->setAuthor($this->data['author']);
-        $cat->setVersion($this->data['version']);
-        $cat->setUpdateAvailable($this->data['update_available']);
-        $cat->setAccessLevel($this->data['access_level']);
-        $cat->setDescription($this->data['description']);
-        $manager->persist($cat);
-        $this->setReference($this->data['slug'], $cat);
-        $manager->flush();
-    }
-
-    /**
-     * @param ObjectManager $manager
-     */
-    function loadModule(ObjectManager $manager)
-    {
-        foreach ($this->data as $key => $data) {
-            $module = (Module::where('slug', $data['slug'])->count() == 0)
-                ? new Module()
-                : Module::findOneBySlug($data['slug']);
-            $module->setName($data['name']);
-            $module->setSlug($data['slug']);
-            $module->setCallback($data['callback']);
-            $module->setDescription($data['description']);
-            $module->setCategory($this->getReference($data['category']));
-            $module->setAccessLevel($data['access_level']);
-            $this->setReference($key, $module);
-            $manager->persist($module);
         }
         $manager->flush();
     }
@@ -430,17 +308,6 @@ trait LoadFixture
 
             $layout = ($this->hasReference($data['layout'])) ? $this->getReference($data['layout']) : Template::findOneByName($data['layout']);
             $page->setLayout($layout);
-
-            foreach ($data['stylesheets'] as $style) {
-                $style = ($this->hasReference($style)) ? $this->getReference($style) : Template::findOneByName($style);
-                $page->addStylesheet($style);
-            }
-
-            foreach ($data['libraries'] as $lib) {
-                $lib = ($this->hasReference($lib)) ? $this->getReference($lib) : Library::findOneByName($lib);
-                $page->addLibrary($lib);
-            }
-
             $page->setType($data['type']);
 
             if (isset($data['builder'])) $page->setBuilder($data['builder']);
@@ -450,6 +317,24 @@ trait LoadFixture
             $manager->persist($page);
         }
 
+        $manager->flush();
+    }
+
+    /**
+     * @param ObjectManager $manager
+     */
+    public function loadCustomFieldRule(ObjectManager $manager)
+    {
+        foreach($this->data as $key => $data) {
+            $cf = (CustomFieldRule::where('name', $data['name'])->count() == 0) ? new CustomFieldRule() : CustomFieldRule::findOneByName($data['name']);
+            $cf->setTitle($data['title']);
+            $cf->setName($data['name']);
+            $cf->setCallback($data['callback']);
+            $cf->setType($data['type']);
+            $cf->setReplaceTable($data['table']);
+            $this->setReference($key, $cf);
+            $manager->persist($cf);
+        }
         $manager->flush();
     }
 
@@ -642,11 +527,7 @@ trait LoadFixture
                 $content->setPage($page);
             }
             $content->setWebsite($website);
-
-            $module = $this->hasReference($data['module']) ? $this->getReference($data['module']) : Module::findOneBySlug($data['module']);
-            $content->setModule($module);
-            $template = $this->hasReference($data['template']) ? $this->getReference($data['template']) : Template::findOneByName($data['template']);
-            $content->setTemplate($template);
+            $content->setModule($data['module']);
 
             if (!is_null($data['section']))
                 $content->setSection(Section::findOneById($data['section']));

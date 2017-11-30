@@ -11,14 +11,10 @@
         <meta name="_token" content="{{ token() }}">
         <!-- END META -->
 
-        {{ debug_bar_header() | raw }}
-
         <link rel="icon" href="{{ asset('media/default/favicon.ico') }}">
 
         <!-- BEGIN STYLESHEETS -->
-        {% for css in libs['css'] %}
-            <link href='{{ asset(css) }}' rel='stylesheet' type='text/css'/>
-        {% endfor %}
+        {{ assets(libs, 'css') }}
         {% block css %}{% endblock %}
         <!-- END STYLESHEETS -->
 
@@ -32,16 +28,23 @@
 
     <body>
 
-        <div id="app">
-            {% block body %}{% endblock %}
-        </div>
+        {% include('Include/sidebar.html.twig') %}
+
+        {% include('Include/header.html.twig') %}
+
+        <!-- Main container -->
+        <main>
+            <div class="main-content">
+                {% block body %}{% endblock %}
+            </div><!--/.main-content -->
+
+            {% include('Include/footer.html.twig') %}
+
+        </main>
 
         <!-- BEGIN JAVASCRIPT -->
-        {% for js in libs['js'] %}
-            <script src="{{ asset(js) }}"></script>
-        {% endfor %}
+        {{ assets(libs, 'js') }}
         {% block js %}{% endblock %}
-        {{ debug_bar_footer() | raw }}
         <!-- END JAVASCRIPT -->
 
     </body>

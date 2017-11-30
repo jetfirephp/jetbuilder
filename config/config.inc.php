@@ -41,7 +41,7 @@ return [
             'array' => [
                 'class' => 'JetFire\Routing\Matcher\ArrayMatcher',
                 'resolver' => [
-                    'isClosureAndTemplate',
+                    /*'isClosureAndTemplate',*/
                     'isControllerAndTemplate',
                     /*'isClosure',
                     'isController',*/
@@ -78,14 +78,13 @@ return [
             'twig' => [
                 'class' => 'JetFire\Template\Twig\TwigTemplate',
                 'extension' => '.html.twig',
-                'cache' => ROOT . '/storage/template/',
+                'cache' => ROOT . '/var/cache/template/',
                 'charset' => 'utf-8',
                 'functions' => [
                     'Jet\Extensions\Twig\DefaultExtension',
                     'Jet\Extensions\Twig\FrontExtension',
                     'Jet\Extensions\Twig\TextExtension',
-                    'Twig_Extension_StringLoader',
-                    'Phive\Twig\Extensions\Deferred\DeferredExtension'
+                    'Twig_Extension_StringLoader'
                 ]
             ],
             // composer require plates/plates
@@ -106,7 +105,7 @@ return [
 
     // mail configuration
     'mail' => [
-        'use' => 'phpmailer',
+        'use' => 'swiftmailer',
         'class' => 'JetFire\Framework\System\Mail',
         'mailers' => [
             // composer require phpmailer/phpmailer
@@ -152,7 +151,7 @@ return [
             ],
             'file_cache' => [
                 'class' => 'Doctrine\Common\Cache\FilesystemCache',
-                'args' => [ROOT . '/storage/cache', '.data']
+                'args' => [ROOT . '/var/cache/db', '.data']
             ],
             'apc_cache' => [
                 'class' => 'Doctrine\Common\Cache\ApcCache'
@@ -215,7 +214,7 @@ return [
             ],
             'file_handler' => [
                 'class' => 'Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler',
-                'args' => [ROOT . '/storage/sessions'],
+                'args' => [ROOT . '/var/session'],
             ],
             'memcache_handler' => [
                 'class' => 'Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler',
@@ -286,21 +285,21 @@ return [
                 'class' => 'Monolog\Handler\RotatingFileHandler',
                 'level' => 'INFO',
                 'max_files' => 30,
-                'stream' => ROOT . '/storage/logs/system.log'
+                'stream' => ROOT . '/var/log/system.log'
             ],
 
             'payment_handler' => [
                 'class' => 'Monolog\Handler\RotatingFileHandler',
                 'level' => 'INFO',
                 'max_files' => 30,
-                'stream' => ROOT . '/storage/logs/payment.log'
+                'stream' => ROOT . '/var/log/payment.log'
             ],
 
             'import_handler' => [
                 'class' => 'Monolog\Handler\RotatingFileHandler',
                 'level' => 'INFO',
                 'max_files' => 30,
-                'stream' => ROOT . '/storage/logs/import.log'
+                'stream' => ROOT . '/var/log/import.log'
             ],
 
             'pdo_handler' => [
@@ -345,6 +344,11 @@ return [
     'debugger' => [
         'mode' => 'r', // r => rich, p => plain, w => whitespace, c => cli
         'theme' => 'original', // original, solarized, solarized-dark, aante-light
+    ],
+
+    'minify' => [
+        'script_path' => '/min/static/',
+        'cache_path' => '/var/cache/asset'
     ]
 
 ];

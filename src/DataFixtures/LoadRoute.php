@@ -19,42 +19,6 @@ class LoadRoute extends AbstractFixture
             'middleware' => null,
             'subdomain' => null,
             'position' => 0
-        ],
-        [
-            'url' => '/tarif',
-            'name' => 'module:price.type:static.action:all',
-            'method' => ['GET'],
-            'argument' => null,
-            'middleware' => null,
-            'subdomain' => null,
-            'position' => 0
-        ],
-        [
-            'url' => '/equipe',
-            'name' => 'module:team.type:static.action:all',
-            'method' => ['GET'],
-            'argument' => null,
-            'middleware' => null,
-            'subdomain' => null,
-            'position' => 0
-        ],
-        [
-            'url' => '/galerie',
-            'name' => 'module:gallery.type:static.action:all',
-            'method' => ['GET'],
-            'argument' => null,
-            'middleware' => null,
-            'subdomain' => null,
-            'position' => 0
-        ],
-        [
-            'url' => '/contact',
-            'name' => 'module:contact.type:static.action:show',
-            'method' => ['GET'],
-            'argument' => null,
-            'middleware' => null,
-            'subdomain' => null,
-            'position' => 0
         ]
     ];
 

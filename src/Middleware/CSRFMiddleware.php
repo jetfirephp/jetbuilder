@@ -2,7 +2,7 @@
 
 namespace Jet\Middleware;
 
-use Jet\Services\Admin;
+use Jet\AdminBlock\Services\Admin;
 use JetFire\Framework\Providers\ResponseProvider;
 use JetFire\Framework\System\Request;
 use JetFire\Http\Session;

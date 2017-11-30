@@ -16,6 +16,7 @@ return [
 
     '/dashboard/*' => [
         'use' => 'AdminController@{method}',
+        'template' => 'Dashboard/{template}',
         'ajax' => true,
     ],
 

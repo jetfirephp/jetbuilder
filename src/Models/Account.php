@@ -2,7 +2,6 @@
 
 namespace Jet\Models;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JetFire\Db\Model;
 use Doctrine\ORM\Mapping;
 
@@ -20,10 +19,6 @@ class Account extends Model implements \JsonSerializable
      * @var null
      */
     private $tmp_id = null;
-    /**
-     * @var array
-     */
-    private $tmp_website_ids = [];
 
     /**
      * @Id
@@ -52,19 +47,10 @@ class Account extends Model implements \JsonSerializable
      */
     protected $password = null;
     /**
-     * @ManyToOne(targetEntity="Status")
-     * @JoinColumn(name="status_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $status;
-    /**
      * @ManyToOne(targetEntity="Media")
      * @JoinColumn(name="photo_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $photo;
-    /**
-     * @OneToMany(targetEntity="WebsiteAccountStatus", mappedBy="account")
-     */
-    protected $websites;
     /**
      * @Column(type="smallint", options={"default" : 0})
      */
@@ -78,7 +64,7 @@ class Account extends Model implements \JsonSerializable
      */
     protected $token_time = null;
     /**
-     * @Column(type="json", nullable=true)
+     * @Column(type="json_array", nullable=true)
      */
     protected $data;
     /**
@@ -90,12 +76,6 @@ class Account extends Model implements \JsonSerializable
      */
     public $updated_at;
 
-    /**
-     * Account constructor.
-     */
-    public function __construct() {
-        $this->websites = new ArrayCollection();
-    }
 
     /**
      * @return mixed
@@ -205,46 +185,6 @@ class Account extends Model implements \JsonSerializable
     public function setPhoto($photo)
     {
         $this->photo = $photo;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWebsites()
-    {
-        return $this->websites;
-    }
-
-    /**
-     * @param WebsiteAccountStatus $websites
-     */
-    public function setWebsites($websites)
-    {
-        $this->websites = $websites;
-    }
-    
-    /**
-     * @param WebsiteAccountStatus $website
-     */
-    public function addWebsite(WebsiteAccountStatus $website)
-    {
-        $this->websites[] = $website;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
     }
 
     /**
@@ -363,11 +303,6 @@ class Account extends Model implements \JsonSerializable
     public function onPreRemove()
     {
         $this->tmp_id = $this->getId();
-        $websites = $this->getWebsites();
-        /** @var WebsiteAccountStatus $website */
-        foreach ($websites as $website) {
-            $this->tmp_website_ids[] = $website->getWebsite()->getId();
-        }
     }
 
     /**
@@ -375,13 +310,9 @@ class Account extends Model implements \JsonSerializable
      */
     public function onPostRemove()
     {
-        if (!is_null($this->tmp_id) && is_dir(ROOT. '/public/media/accounts/' . $this->tmp_id)) {
-            delTree(ROOT . '/public/media/accounts/' . $this->tmp_id);
+        if (!is_null($this->tmp_id) && is_dir(ROOT. '/public/upload/accounts/' . $this->tmp_id)) {
+            delTree(ROOT . '/public/upload/accounts/' . $this->tmp_id);
             $this->tmp_id = null;
-            foreach ($this->tmp_website_ids as $website) {
-                if (is_dir(ROOT . '/public/media/sites/' . $website)) delTree(ROOT . '/public/media/sites/' . $website);
-            }
-            $this->tmp_website_ids = [];
         }
     }
 
@@ -401,8 +332,6 @@ class Account extends Model implements \JsonSerializable
             'phone' => $this->getPhone(),
             'email' => $this->getEmail(),
             'photo' => $this->getPhoto(),
-            'websites' => $this->getWebsites(),
-            'status' => $this->getStatus(),
             'state' => $this->getState(),
             'data' => $this->getData(),
             'registered_at' => $this->getRegisteredAt(),

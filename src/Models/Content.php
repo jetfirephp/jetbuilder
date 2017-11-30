@@ -47,7 +47,7 @@ class Content extends Model implements \JsonSerializable
      */
     protected $section;
     /**
-     * @Column(type="json", nullable=true)
+     * @Column(type="json_array", nullable=true)
      */
     protected $data;
 

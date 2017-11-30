@@ -5,7 +5,7 @@ namespace Jet\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\Providers\EventProvider;
 
 /**

@@ -5,7 +5,7 @@ namespace Jet\AdminBlock\Controllers;
 use Jet\Models\Account;
 use Jet\AdminBlock\Requests\AuthRequest;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\System\Mail;
 use JetFire\Framework\System\Request;
 
@@ -76,10 +76,9 @@ class AuthController extends MainController
      */
     public function logout(Auth $auth)
     {
-        $admin_domain = (isset($this->app->data['setting']['admin_domain'])) ? $this->app->data['setting']['admin_domain'] : '';
         $auth->logout();
         $auth->getSession()->clear();
-        return ['status' => 'success', 'target' => $admin_domain . '/auth'];
+        return ['redirect' => $this->getAdminUrl($this->app, '/auth')];
     }
 
     /**
@@ -111,7 +110,7 @@ class AuthController extends MainController
             }
             return ['status' => 'error', 'message' => 'Désolé ! Nous n\'avons trouvé aucun compte associé à cette adresse e-mail'];
         }
-        return $this->render('Auth/lost_password');
+        return [];
     }
 
     /**

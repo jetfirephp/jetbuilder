@@ -9,7 +9,7 @@ use Jet\Models\Page;
 use Jet\Models\Section;
 use Jet\Models\Template;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 class ContentController extends AdminController
 {

@@ -15,11 +15,10 @@ class LoadAccount extends AbstractFixture implements DependentFixtureInterface
             'firstName' => 'Sumugan',
             'lastName' => 'Sinnarasa',
             'password' => 'admin',
-            'email' => 'sumugan.sinnarasa@desico.fr',
+            'email' => 'mugan27@gmail.com',
             'phone' => '06 52 01 15 31',
-            'photo' => '/public/media/default/user-photo.png',
-            'state' => 1,
-            'status' => '_super_admin'
+            'photo' => '/public/upload/default/user-photo.png',
+            'state' => 1
         ],
     ];
 
@@ -37,8 +36,7 @@ class LoadAccount extends AbstractFixture implements DependentFixtureInterface
     function getDependencies()
     {
         return [
-            'Jet\DataFixtures\LoadMedia',
-            'Jet\DataFixtures\LoadStatus',
+            'Jet\DataFixtures\LoadMedia'
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace Jet\AdminBlock\Controllers;
 
 use Jet\Models\Account;
 use Jet\AdminBlock\Requests\AccountRequest;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 /**
  * Class AccountController

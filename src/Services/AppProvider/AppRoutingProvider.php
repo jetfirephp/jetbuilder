@@ -4,9 +4,16 @@ namespace Jet\Services\AppProvider;
 
 use JetFire\Framework\Providers\RoutingProvider;
 
+/**
+ * Class AppRoutingProvider
+ * @package Jet\Services\AppProvider
+ */
 class AppRoutingProvider extends RoutingProvider
 {
 
+    /**
+     *
+     */
     public function setAppRoutes()
     {
         foreach ($this->app->data['app']['blocks'] as $key => $block) {

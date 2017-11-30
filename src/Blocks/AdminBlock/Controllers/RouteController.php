@@ -5,7 +5,7 @@ namespace Jet\AdminBlock\Controllers;
 use Jet\AdminBlock\Requests\RouteRequest;
 use Jet\Models\Route;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 
 /**

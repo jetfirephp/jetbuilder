@@ -5,7 +5,7 @@ namespace Jet\AdminBlock\Controllers;
 use Jet\AdminBlock\Requests\SocietyRequest;
 use Jet\Models\Account;
 use Jet\Models\Society;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 class SocietyController extends AdminController
 {

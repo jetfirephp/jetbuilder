@@ -2,6 +2,10 @@
 
 return [
 
+    /* Form inputs */
+    'Password' => 'Mot de passe',
+    'Submit' => 'Valider',
+
     /* From validation */
     'Invalid email format' => 'Format de l\' e-mail incorrect',
     'E-mail is required' => 'L\' e-mail est requis',
@@ -9,7 +13,7 @@ return [
 
     /* Auth */
     'Login' => 'Connexion',
-    'Remember me' => 'Rester connecté',
+    'Stay connect' => 'Rester connecté',
     'Forgot password ?' => 'Mot de passe oublié ?',
     'Recover password' => 'Réinitialiser votre mot de passe',
     'Account not found' => 'Compte inexistant',

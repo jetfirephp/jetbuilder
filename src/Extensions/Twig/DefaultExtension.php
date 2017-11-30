@@ -65,7 +65,7 @@ class DefaultExtension extends Twig_Extension implements Twig_Extension_GlobalsI
             }),
             new Twig_SimpleFunction('path', function ($path = null, $params = []) {
                 $view = $this->app->get('response')->getView();
-                if(isset($this->app->data['_lang_code'])) {
+                if (isset($this->app->data['_lang_code'])) {
                     $params = array_merge(['_lang_code' => $this->app->data['_lang_code']], $params);
                 }
                 $url = is_null($url = $view->path($path, $params))
@@ -79,6 +79,14 @@ class DefaultExtension extends Twig_Extension implements Twig_Extension_GlobalsI
             }),
             new Twig_SimpleFunction('asset', function ($value, $full_path = false) {
                 return $this->app->get('Jet\Services\Asset')->getPublicPath($value, $full_path);
+            }),
+            new Twig_SimpleFunction('assets', function ($libs = [], $type) {
+                $this->app->get('Jet\Services\Asset')->combineAsset($libs, $type);
+                if($this->app->data['setting']['environment'] == 'dev'){
+                    echo ($type == 'css')
+                        ? $this->app->get('debug_toolbar')->getDebugBarRenderer()->renderHead()
+                        : $this->app->get('debug_toolbar')->getDebugBarRenderer()->render();
+                }
             }),
             new Twig_SimpleFunction('request', function () {
                 return $this->app->get('request');
@@ -99,7 +107,7 @@ class DefaultExtension extends Twig_Extension implements Twig_Extension_GlobalsI
                 return ($enable) ? $this->app->get('debug_toolbar')->getDebugBarRenderer()->renderHead() : '';
             }),
             new Twig_SimpleFunction('debug_bar_footer', function ($enable = true, $ajax = false) {
-                if($enable) {
+                if ($enable) {
                     return ($ajax == true)
                         ? $this->app->get('debug_toolbar')->getDebugBarRenderer()->render(false)
                         : $this->app->get('debug_toolbar')->getDebugBarRenderer()->render();

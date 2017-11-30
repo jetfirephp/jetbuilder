@@ -4,7 +4,7 @@ namespace Jet\Test\Blocks\AdminBlock\Controllers;
 
 use Jet\Models\Account;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 use Jet\Test\BaseTest;
 
 /**

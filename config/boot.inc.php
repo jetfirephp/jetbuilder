@@ -171,7 +171,7 @@ return [
             ],
         ],
         'auth' => [
-            'use' => 'Jet\Services\Auth',
+            'use' => 'Jet\AdminBlock\Services\Auth',
             'rule' => [
                 'shared' => true,
             ],
@@ -198,6 +198,13 @@ return [
                 'call' => [
                     'init' => ['localhost', 6379]
                 ]
+            ],
+        ],
+        'minify' => [
+            'use' => 'Jet\Services\Minify',
+            'rule' => [
+                'shared' => true,
+                'construct' => ['#config.minify.script_path', '#config.minify.cache_path']
             ],
         ],
         'recaptcha' => [

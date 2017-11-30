@@ -9,7 +9,7 @@ use Jet\Models\Society;
 use Jet\Models\Template;
 use Jet\Models\Theme;
 use Jet\Models\Website;
-use Jet\Services\Auth;
+use Jet\AdminBlock\Services\Auth;
 
 /**
  * Class WebsiteController

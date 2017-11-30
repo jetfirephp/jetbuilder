@@ -4,7 +4,8 @@
   "public_path": "",
 
   "environment": "{{ENV}}",
-  "maintenance": {{MAINTENANCE}},
+  "minify": {{MINIFY}},
+  "maintenance": false,
 
   "db": {
     "default": {

@@ -36,24 +36,27 @@ return [
     'admin' => [
 
         'libs' => [
+            'basePath' => 'src/Blocks/AdminBlock/Resources/public/',
             'css' => [
                 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i',
-                'admin/css/core.min.css',
-                'admin/css/app.min.css',
-                'admin/css/style.min.css',
-                'admin/css/admin.css'
+                'core.min.css',
+                'app.min.css',
+                'style.min.css',
+                'admin.css'
             ],
             'js' => [
-                'admin/js/core.min.js',
-                'admin/js/app.min.js',
-                'admin/js/script.min.js',
                 'https://unpkg.com/vue',
                 'https://unpkg.com/axios/dist/axios.min.js',
-                'admin/js/admin.js',
+                'core.min.js',
+                'app.min.js',
+                'script.min.js',
+                'admin.js',
             ]
         ],
 
         'module_check' => false,
+
+        'hook' => include('hook.php'),
 
         'custom_field_type' => [
             'basic_type' => [
@@ -92,6 +95,7 @@ return [
         'custom_field_callback' => [
             'media' => '\\Jet\\AdminBlock\\Controllers\\MediaController@renderField',
         ],
+
         'publication_type' => [
             'page' =>
                 [

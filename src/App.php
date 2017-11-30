@@ -27,11 +27,7 @@ class App
      */
     public function run()
     {
-        $config = $this->load(include ROOT . '/config/boot.inc.php');
-        $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Blocks/');
-        $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Modules/');
-        $this->systemApp->load($config);
-        $this->systemApp->boot();
+        $this->init();
         $this->systemApp->fire();
     }
 
@@ -39,12 +35,33 @@ class App
      * @param array $config
      * @return array
      */
-    private function load($config = [])
+    public function load($config = [])
     {
         foreach ($config['include_files'] as $key => $file) {
             $config['include_files'][$key] = (!is_array($file) && is_file($file)) ? $this->systemApp->parseFile($file) : $file;
         }
         return $config;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConsole()
+    {
+        $this->init();
+        return $this->systemApp->get('console');
+    }
+
+    /**
+     *
+     */
+    private function init()
+    {
+        $config = $this->load(include ROOT . '/config/boot.inc.php');
+        $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Blocks/');
+        $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Modules/');
+        $this->systemApp->load($config);
+        $this->systemApp->boot();
     }
 
     /**

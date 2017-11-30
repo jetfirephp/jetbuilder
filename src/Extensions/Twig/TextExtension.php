@@ -45,8 +45,7 @@ class TextExtension extends Twig_Extension
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('trans', function ($text, $placeholder = []) {
-                $route = $this->app->get('routing')->getRouter()->route;
-                $params = $route->getTarget('params');
+                $params = $this->app->get('routing')->getRouter()->route->getTarget('params');
                 return (isset($this->app->data['_locale']) && isset($params['lang_codes'][$this->app->data['_lang_code']]))
                     ? $this->app->get('translator')->translate($text, $placeholder, $params['locale_domain'], $this->app->data['_locale'])
                     : $text;
