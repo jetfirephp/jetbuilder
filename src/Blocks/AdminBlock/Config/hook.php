@@ -2,37 +2,97 @@
 
 return [
     'left_sidebar' => [
-        'Preview' => [
+        'CMS' => [
             'Dashboard' => [
                 'icon' => 'fa fa-home',
                 'link' => '/dashboard'
             ],
-            'Samples' => [
-                'icon' => 'fa fa-tv',
-                'items' => [
-                    'Invoicer' => '/dashboard/test',
-                    'Job Management'  => '/dashboard/test'
-                ]
+            'Pages' => [
+                'icon' => 'fa fa-file',
+                'link' => '/pages'
             ],
         ],
-        'Framework' => [
-            'Layout' => [
+        'Extras' => [
+            'Medias' => [
+                'icon' => 'fa fa-image',
+                'link' => '/medias'
+            ],
+            'Modules' => [
+                'icon' => 'fa fa-puzzle-piece',
+                'link' => '/pages'
+            ],
+            'Themes' => [
                 'icon' => 'ti-layout',
-                'items' => [
-                    'Grid' => '/dashboard/test',
-                    'Layout'  => '/dashboard/test'
-                ]
+                'link' => '/thtmes'
+            ],
+            'Templates' => [
+                'icon' => 'fa fa-files-o',
+                'link' => '/templates'
             ]
+        ],
+        'Configuration' => [
+            'Accounts' => [
+                'icon' => 'fa fa-user',
+                'link' => '/accounts'
+            ],
+            'Websites' => [
+                'icon' => 'fa fa-tv',
+                'link' => '/websites'
+            ],
         ],
         'divider@1' => [
             'Help' => [
                 'icon' => 'fa fa-question-circle',
                 'items' => [
-                    'FAQ' => '/dashboard/test',
-                    'Changelog'  => '/dashboard/test'
+                    'FAQ' => [
+                        'link' => '/dashboard/test'
+                    ],
+                    'Changelog' => [
+                        'link' => '/dashboard/test'
+                    ]
                 ]
             ]
         ]
     ],
-    ''
+    'header' => [
+        'left' => [
+            'Box' => [
+                'template' => 'Include/header_box_dropdown.html.twig',
+                'items' => [
+                    'Dashboard' => [
+                        'icon' => 'home',
+                        'link' => '/dashboard'
+                    ],
+                    'Gallery' => [
+                        'icon' => 'stack_of_photos',
+                        'link' => ''
+                    ]
+                ]
+            ]
+        ],
+        'right' => [
+            'Profile' => [
+                'image' => 'avatar/1.jpg',
+                'items' => [
+                    'Profile' => [
+                        'icon' => 'ti-user',
+                        'link' => '/'
+                    ],
+                    'Inbox' => [
+                        'icon' => 'ti-email',
+                        'link' => '/'
+                    ],
+                    'Settings' => [
+                        'icon' => 'ti-settings',
+                        'link' => '/'
+                    ],
+                    'Logout' => [
+                        'divider' => true,
+                        'icon' => 'ti-power-off',
+                        'link' => '/'
+                    ]
+                ]
+            ]
+        ]
+    ]
 ];

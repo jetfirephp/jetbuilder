@@ -69,11 +69,7 @@ return [
         'use' => 'AddressController@{method}',
         'ajax' => true
     ],
-
-    '/society/*' => [
-        'use' => 'SocietyController@{method}',
-        'ajax' => true
-    ],
+    
 
     '/website/*' => [
         'use' => 'WebsiteController@{method}',

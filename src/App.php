@@ -59,6 +59,7 @@ class App
     {
         $config = $this->load(include ROOT . '/config/boot.inc.php');
         $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Blocks/');
+        $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Themes/');
         $config['include_files'] = $this->initExternalConfig($config['include_files'], ROOT . '/src/Modules/');
         $this->systemApp->load($config);
         $this->systemApp->boot();
@@ -76,7 +77,7 @@ class App
             $dir = $path . $folder;
             if (is_dir($dir) && is_file($dir . '/Config/init.php')) {
                 $init = include $dir . '/Config/init.php';
-                $include_files = array_merge_recursive($init, $include_files);
+                $include_files = array_replace_recursive($include_files, $init);
             }
         }
         return $include_files;

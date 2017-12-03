@@ -88,6 +88,11 @@ class AdminMiddleware
         return true;
     }
 
+    /**
+     * @param App $app
+     * @param Auth $auth
+     * @return array
+     */
     private function getAdminData(App $app, Auth $auth)
     {
         $data = [];

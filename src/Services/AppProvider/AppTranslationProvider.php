@@ -61,9 +61,14 @@ class AppTranslationProvider extends Provider
     protected function setLoaders()
     {
         foreach ($this->locales as $domain => $locales) {
-            foreach ($locales as $locale => $path) {
-                if (is_file($path)) {
-                    $this->translator->addResource('array', include $path, $locale, $domain);
+            foreach ($locales as $locale => $block_locale) {
+                if(is_string($block_locale)){
+                    $this->translator->addResource('array', include $block_locale, $locale, $domain);
+                }elseif(is_array($block_locale)) {
+                    foreach ($block_locale as $path) {
+                        if (!is_array($path) && is_file($path)) $path = include $path;
+                        $this->translator->addResource('array', $path, $locale, $domain);
+                    }
                 }
             }
         }

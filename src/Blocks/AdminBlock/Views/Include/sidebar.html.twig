@@ -2,7 +2,7 @@
 <aside class="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg">
     <header class="sidebar-header">
         <span class="logo">
-          {{ app_name }}
+          {{ app_name | trans }}
         </span>
         <span class="sidebar-toggle-fold"></span>
     </header>
@@ -18,25 +18,25 @@
                 {% for title, item in items %}
                     {% if item['link'] is defined %}
                         <li class="menu-item">
-                            <a class="menu-link" href="{{ item['link'] }}">
+                            <a class="menu-link" href="{{ path(item['link']) }}">
                                 <span class="icon {{ item['icon'] }}"></span>
-                                <span class="title">{{ title }}</span>
+                                <span class="title">{{ title | trans}}</span>
                             </a>
                         </li>
                     {% else %}
                         <li class="menu-item">
                             <a class="menu-link" href="#">
                                 <span class="icon {{ item['icon'] }}"></span>
-                                <span class="title">{{ title }}</span>
+                                <span class="title">{{ title | trans }}</span>
                                 <span class="arrow"></span>
                             </a>
 
                             <ul class="menu-submenu">
-                                {% for label, link in item['items'] %}
+                                {% for sub_title, sub_item in item['items'] %}
                                 <li class="menu-item">
-                                    <a class="menu-link" href="{{ link }}">
+                                    <a class="menu-link" href="{{ path(sub_item['link']) }}">
                                         <span class="dot"></span>
-                                        <span class="title">{{ label }}</span>
+                                        <span class="title">{{ sub_title | trans }}</span>
                                     </a>
                                 </li>
                                 {% endfor %}

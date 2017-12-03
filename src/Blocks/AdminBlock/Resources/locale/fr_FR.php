@@ -18,4 +18,8 @@ return [
     'Recover password' => 'Réinitialiser votre mot de passe',
     'Account not found' => 'Compte inexistant',
     'Password cannot contain whitespace' => 'Le mot de passe ne doit pas contenir d\'espace',
+
+    /* Navs */
+    'Profile' => 'Profil',
+    'Inbox' => 'Boîte de réception',
 ];

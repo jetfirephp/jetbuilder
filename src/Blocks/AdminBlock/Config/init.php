@@ -12,7 +12,11 @@ return [
             'Admin' => [
                 'path' => 'src/Blocks/AdminBlock/',
                 'namespace' => '\\Jet\\AdminBlock',
-                'view_dir' => 'src/Blocks/AdminBlock/Views/',
+                'view_dir' => [
+                    'admin' => 'src/Blocks/AdminBlock/Views/',
+                    'module' => 'src/Modules/',
+                    'theme' => 'src/Themes/'
+                ],
                 'prefix' => 'admin/:_lang_code',
                 //'subdomain' => 'admin',
                 'params' => [
@@ -27,8 +31,8 @@ return [
         ],
         'locales' => [
             'admin' => [
-                'en_GB' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php',
-                'fr_FR' => ROOT . '/src/Blocks/AdminBlock/Resources/locale/fr_FR.php',
+                'en_GB' => [ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php'],
+                'fr_FR' => [ROOT . '/src/Blocks/AdminBlock/Resources/locale/fr_FR.php'],
             ]
         ]
     ],

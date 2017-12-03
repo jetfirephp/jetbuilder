@@ -1,0 +1,13 @@
+<div class="dropdown d-none d-md-block">
+    <span class="topbar-btn" data-toggle="dropdown"><i class="ti-layout-grid3-alt"></i></span>
+    <div class="dropdown-menu dropdown-grid">
+        {% for title, item in category['items'] %}
+            <a class="dropdown-item" href="{{ path(item['link']) }}">
+                <span data-i8-icon="{{ item['icon'] }}"></span>
+                <span class="title">{{ title | trans }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="topbar-divider d-none d-md-block"></div>
