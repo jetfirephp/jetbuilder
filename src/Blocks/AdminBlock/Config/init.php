@@ -17,9 +17,10 @@ return [
                     'module' => 'src/Modules/',
                     'theme' => 'src/Themes/'
                 ],
-                'prefix' => 'admin/:_lang_code',
+                'prefix' => 'admin/:_lang_code:_website?',
                 //'subdomain' => 'admin',
                 'params' => [
+                    'arguments' => ['_website' => '/[0-9]'],
                     'domain_key' => 'admin_domain',
                     'locale_domain' => 'admin',
                     'lang_codes' => [

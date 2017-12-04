@@ -23,7 +23,7 @@ return [
             ],
             'Themes' => [
                 'icon' => 'ti-layout',
-                'link' => '/thtmes'
+                'link' => '/themes'
             ],
             'Templates' => [
                 'icon' => 'fa fa-files-o',

@@ -34,7 +34,7 @@ class TranslationMiddleware
      * @param Request $request
      * @param Response $response
      * @param Route $route
-     * @return bool|Response
+     * @return bool|array
      */
     public function beforeHandle(Request $request, Response $response, Route $route)
     {
@@ -59,9 +59,9 @@ class TranslationMiddleware
         $app->data['_locale'] = $app->data['_default_locale'];
         $params = $route->getTarget('params');
 
-        if (isset($route->getDetail()['keys'][':_lang_code']) && isset($params['locale_domain'])) {
-            if (!isset($params['lang_codes'][$route->getDetail()['keys'][':_lang_code']])) return false;
-            $app->data['_lang_code'] = $route->getDetail()['keys'][':_lang_code'];
+        if (isset($route->getKeys()[':_lang_code']) && isset($params['locale_domain'])) {
+            if (!isset($params['lang_codes'][$route->getKeys()[':_lang_code']])) return false;
+            $app->data['_lang_code'] = $route->getKeys()[':_lang_code'];
             $app->data['_locale'] = $params['lang_codes'][$app->data['_lang_code']];
         }
 
@@ -72,7 +72,7 @@ class TranslationMiddleware
     /**
      * @param Route $route
      * @param AppTranslationProvider $translator
-     * @return Response
+     * @return JsonResponse|bool
      */
     public function afterHandle(Route $route, AppTranslationProvider $translator)
     {
@@ -84,7 +84,7 @@ class TranslationMiddleware
     /**
      * @param Route $route
      * @param AppTranslationProvider $translator
-     * @return Response
+     * @return Response|bool
      */
     public function betweenHandle(Route $route, AppTranslationProvider $translator)
     {
@@ -97,7 +97,7 @@ class TranslationMiddleware
     /**
      * @param Route $route
      * @param AppTranslationProvider $translator
-     * @return Response
+     * @return array|bool
      */
     private function translate(Route $route, AppTranslationProvider $translator)
     {

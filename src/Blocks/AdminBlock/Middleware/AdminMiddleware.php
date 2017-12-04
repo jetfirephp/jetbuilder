@@ -44,6 +44,13 @@ class AdminMiddleware
             $request->request->add($request->json()->all());
         }
 
+        // remove trailing slash in route keys
+        $route_keys = $route->getKeys();
+        if(isset($route_keys[':_website'])){
+            $route_keys[':_website'] = trim($route_keys[':_website'], '/');
+            $route->addDetail('keys', $route_keys);
+        }
+
         return true;
     }
 
@@ -54,7 +61,7 @@ class AdminMiddleware
      * @param Route $route
      * @param App $app
      * @param Auth $auth
-     * @return bool
+     * @return \Symfony\Component\HttpFoundation\Response|bool
      */
     public function betweenHandle(Request $request, Redirect $redirect, Route $route, App $app, Auth $auth)
     {
@@ -80,7 +87,7 @@ class AdminMiddleware
                 'locale' => $app->data['_locale'],
                 'libs' => $app->data['admin']['libs']
             ];
-            $data = ($route->getTarget('controller') != AuthController::class) ? array_merge($this->getAdminData($app, $auth), $data) : $data;
+            $data = (/*$auth->check() && */$route->getTarget('controller') != AuthController::class && !in_array($route->getTarget('action'), ['logout', 'getAuth'])) ? array_merge($this->getAdminData($app, $auth), $data) : $data;
 
             $route->addTarget('data', array_merge($data, $route->getTarget('data')));
 

@@ -20,9 +20,6 @@
             "url": "https://asset-packagist.org"
         }
     ],
-    "platform": {
-        "php": "7.0.0"
-    },
     "require-dev": {
         "symfony/yaml": "v2.8.2",
         "codeception/codeception": "^2.2"
@@ -34,7 +31,7 @@
         "doctrine/data-fixtures": "~1.1",
         "doctrine/migrations": "^1.5",
         "beberlei/DoctrineExtensions": "^1.0",
-        "twig/twig": "^2.3",
+        "twig/twig": "^1.35|^2.3",
         "swiftmailer/swiftmailer": "^5.4",
         "symfony/filesystem": "^3.1",
         "symfony/translation": "v3.2.*",
