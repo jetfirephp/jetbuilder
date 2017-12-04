@@ -3,8 +3,6 @@
 namespace Jet\AdminBlock\Controllers;
 
 use Jet\Models\Account;
-use Jet\Models\Theme;
-use Jet\Models\Website;
 use Jet\AdminBlock\Services\Auth;
 use JetFire\Framework\System\Controller;
 

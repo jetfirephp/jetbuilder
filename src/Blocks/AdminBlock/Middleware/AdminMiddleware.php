@@ -43,10 +43,10 @@ class AdminMiddleware
             $_POST = $request->json()->all();
             $request->request->add($request->json()->all());
         }
-
         // remove trailing slash in route keys
         $route_keys = $route->getKeys();
         if(isset($route_keys[':_website'])){
+            $app->data['_website'] = $route_keys[':_website'];
             $route_keys[':_website'] = trim($route_keys[':_website'], '/');
             $route->addDetail('keys', $route_keys);
         }

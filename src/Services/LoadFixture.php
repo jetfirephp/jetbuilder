@@ -11,9 +11,9 @@ use Jet\Models\CustomFieldRule;
 use Jet\Models\Language;
 use Jet\Models\Media;
 use Jet\Models\Page;
+use Jet\Models\Role;
 use Jet\Models\Route;
 use Jet\Models\Section;
-use Jet\Models\Status;
 use Jet\Models\Template;
 use Jet\Models\Theme;
 use Jet\Models\Website;
@@ -68,11 +68,11 @@ trait LoadFixture{
     /**
      * @param ObjectManager $manager
      */
-    public function loadStatus(ObjectManager $manager)
+    public function loadRole(ObjectManager $manager)
     {
         foreach($this->data as $key => $role){
-            $status = (Status::where('role', $role['role'])->count() == 0) ? new Status() : Status::findOneByRole($role['role']);
-            $status->setRole($role['role']);
+            $status = (Role::where('title', $role['title'])->count() == 0) ? new Role() : Role::findOneByTitle($role['title']);
+            $status->setTitle($role['title']);
             $status->setLevel($role['level']);
             $manager->persist($status);
             $this->addReference($key, $status);

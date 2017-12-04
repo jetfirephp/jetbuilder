@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping;
 /**
  * Class Status
  * @package Jet\Models
- * @Entity(repositoryClass="Jet\Models\StatusRepository")
- * @Table(name="status")
+ * @Entity(repositoryClass="Jet\Models\RoleRepository")
+ * @Table(name="roles")
  */
-class Status extends Model implements \JsonSerializable
+class Role extends Model implements \JsonSerializable
 {
 
     /**
@@ -24,7 +24,7 @@ class Status extends Model implements \JsonSerializable
     /**
      * @Column(type="string", unique=true)
      */
-    protected $role;
+    protected $title;
     /**
      * @Column(type="smallint")
      */
@@ -54,17 +54,17 @@ class Status extends Model implements \JsonSerializable
     /**
      * @return mixed
      */
-    public function getRole()
+    public function getTitle()
     {
-        return $this->role;
+        return $this->title;
     }
 
     /**
-     * @param mixed $role
+     * @param mixed $title
      */
-    public function setRole($role)
+    public function setTitle($title)
     {
-        $this->role = $role;
+        $this->title = $title;
     }
 
     /**
@@ -110,7 +110,7 @@ class Status extends Model implements \JsonSerializable
     {
         return [
             'id' => $this->getId(),
-            'role' => $this->getRole(),
+            'title' => $this->getTitle(),
             'level' => $this->getLevel()
         ];
     }

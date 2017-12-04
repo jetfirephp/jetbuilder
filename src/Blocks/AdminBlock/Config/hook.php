@@ -25,19 +25,37 @@ return [
                 'icon' => 'ti-layout',
                 'link' => '/themes'
             ],
-            'Templates' => [
-                'icon' => 'fa fa-files-o',
-                'link' => '/templates'
+            'Tools' => [
+                'icon' => 'ion-wrench',
+                'items' => [
+                    'Templates' => [
+                        'link' => '/templates',
+                    ],
+                    'Custom Fields' => [
+                        'link' => '/custom-fields',
+                    ]
+                ]
             ]
         ],
         'Configuration' => [
             'Accounts' => [
                 'icon' => 'fa fa-user',
-                'link' => '/accounts'
+                'items' => [
+                    'Accounts' => [
+                        'link' => '/accounts'
+                    ],
+                    'Roles' => [
+                        'link' => '/roles'
+                    ]
+                ]
             ],
             'Websites' => [
                 'icon' => 'fa fa-tv',
                 'link' => '/websites'
+            ],
+            'Permissions' => [
+                'icon' => 'fa fa-unlock-alt',
+                'link' => '/permissions'
             ],
         ],
         'divider@1' => [

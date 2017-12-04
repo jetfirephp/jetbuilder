@@ -20,6 +20,8 @@ class DefaultExtension extends Twig_Extension implements Twig_Extension_GlobalsI
      */
     private $app;
 
+    private $route_keys = ['_lang_code','_website'];
+
     /**
      * DefaultExtension constructor.
      * @param App $app
@@ -65,8 +67,8 @@ class DefaultExtension extends Twig_Extension implements Twig_Extension_GlobalsI
             }),
             new Twig_SimpleFunction('path', function ($path = null, $params = []) {
                 $view = $this->app->get('response')->getView();
-                if (isset($this->app->data['_lang_code'])) {
-                    $params = array_merge(['_lang_code' => $this->app->data['_lang_code']], $params);
+                foreach ($this->route_keys as $key){
+                    $params = (isset($this->app->data[$key])) ? array_merge([$key => $this->app->data[$key]], $params) : $params;
                 }
                 $url = is_null($url = $view->path($path, $params))
                     ? $this->app->get('Jet\Services\Asset')->getBaseUrl($path)
