@@ -5,6 +5,7 @@ return [
     '/'	=> [
         'use' => 'AdminController@index',
         'name' => 'admin',
+        'permission' => false
     ],
     
     '/auth/*' => [
@@ -12,22 +13,33 @@ return [
         'template' => 'Auth/{template}',
         'method' => ['GET','POST'],
         'ajax' => true,
+        'permission' => false
     ],
 
     '/dashboard/*' => [
         'use' => 'AdminController@{method}',
         'template' => 'Dashboard/{template}',
         'ajax' => true,
+        'permission' => 'read'
+    ],
+
+    '/permissions/*' => [
+        'use' => 'PermissionController@{method}',
+        'template' => 'Permission/{template}',
+        'ajax' => true,
+        'permission' => false
     ],
 
     '/log/*' => [
         'use' => 'LogController@{method}',
         'ajax' => true,
+        'permission' => ['read', 'delete']
     ],
 
     '/status/*' => [
         'use' => 'StatusController@{method}',
-        'ajax' => true
+        'ajax' => true,
+        'permission' => ['create', 'read', 'update', 'delete']
     ],
 
     '/media/*' => [
@@ -70,7 +82,6 @@ return [
         'ajax' => true
     ],
     
-
     '/website/*' => [
         'use' => 'WebsiteController@{method}',
         'ajax' => true

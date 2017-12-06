@@ -1,0 +1,74 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block body %}
+
+    <header class="header bg-ui-general">
+        <div class="header-info">
+            <h1 class="header-title">
+                <strong>{{ 'Permissions' | trans }}</strong>
+            </h1>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table" data-provide="selectall selectable">
+                            <thead>
+                            <tr>
+                                <th class="w-40px">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th>{{ 'Route' | trans }}</th>
+                                <th>{{ 'Action' | trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for route, params in routes %}
+                                {% if (params['permission'] is defined and params['permission']) or params['permission'] is not defined %}
+                                <tr>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                    <td>{{ route }}</td>
+                                    <td>
+                                        {% if params['permission'] is defined and params['permission'] %}
+                                            {% if params['permission'] is iterable %}
+                                                <select title="{{ 'all' | trans }}" data-provide="selectpicker" multiple>
+                                                    {% for action in params['permission'] %}
+                                                        <option>{{ action | trans }}</option>
+                                                    {% endfor %}
+                                            </select>
+                                            {% else %}
+                                                <p>{{ params['permission'] | trans }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <p>{{ 'all' | trans }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}

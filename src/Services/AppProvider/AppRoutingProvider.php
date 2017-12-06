@@ -89,6 +89,7 @@ class AppRoutingProvider extends RoutingProvider
                 ];
                 $this->collection->setRoutes($from_args, $i);
             }
+            $this->app->data['routes'][$routes['block_' . $i]] = $routes['routes_' . $i];
         }
     }
 
