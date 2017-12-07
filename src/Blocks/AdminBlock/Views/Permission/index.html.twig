@@ -41,17 +41,13 @@
                                     <td>{{ route }}</td>
                                     <td>
                                         {% if params['permission'] is defined and params['permission'] %}
-                                            {% if params['permission'] is iterable %}
-                                                <select title="{{ 'all' | trans }}" data-provide="selectpicker" multiple>
-                                                    {% for action in params['permission'] %}
-                                                        <option>{{ action | trans }}</option>
-                                                    {% endfor %}
+                                            <select title="{{ 'All' | trans }}" data-provide="selectpicker" multiple>
+                                                {% for key, action in params['permission'] %}
+                                                    <option value="{{ key }}">{{ action | trans }}</option>
+                                                {% endfor %}
                                             </select>
-                                            {% else %}
-                                                <p>{{ params['permission'] | trans }}</p>
-                                            {% endif %}
                                         {% else %}
-                                            <p>{{ 'all' | trans }}</p>
+                                            <p>{{ 'All' | trans }}</p>
                                         {% endif %}
                                     </td>
                                 </tr>

@@ -2,18 +2,17 @@
 
 namespace Jet\AdminBlock\Controllers;
 
-use Jet\AdminBlock\Requests\ProfessionRequest;
-use Jet\Models\Profession;
+use JetFire\Framework\System\Controller;
 
 
 /**
  * Class PermissionController
  * @package Jet\AdminBlock\Controllers
  */
-class PermissionController extends AdminController
+class PermissionController extends Controller
 {
 
-    public function listAll(){
+    public function index(){
         return ['routes' => $this->app->data['routes']['src/Blocks/AdminBlock/']];
     }
 }

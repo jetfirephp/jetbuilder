@@ -40,14 +40,7 @@ return [
         'Configuration' => [
             'Accounts' => [
                 'icon' => 'fa fa-user',
-                'items' => [
-                    'Accounts' => [
-                        'link' => '/accounts'
-                    ],
-                    'Roles' => [
-                        'link' => '/roles'
-                    ]
-                ]
+                'link' => '/accounts'
             ],
             'Websites' => [
                 'icon' => 'fa fa-tv',
@@ -55,7 +48,14 @@ return [
             ],
             'Permissions' => [
                 'icon' => 'fa fa-unlock-alt',
-                'link' => '/permissions'
+                'items' => [
+                    'Roles' => [
+                        'link' => '/roles'
+                    ],
+                    'Permissions' => [
+                        'link' => '/permissions',
+                    ]
+                ]
             ],
         ],
         'divider@1' => [

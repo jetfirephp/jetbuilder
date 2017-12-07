@@ -20,20 +20,18 @@ return [
         'use' => 'AdminController@{method}',
         'template' => 'Dashboard/{template}',
         'ajax' => true,
-        'permission' => 'read'
     ],
 
     '/permissions/*' => [
         'use' => 'PermissionController@{method}',
         'template' => 'Permission/{template}',
         'ajax' => true,
-        'permission' => false
     ],
 
     '/log/*' => [
         'use' => 'LogController@{method}',
         'ajax' => true,
-        'permission' => ['read', 'delete']
+        'permission' => ['read' => 'Read', 'delete' => 'Delete']
     ],
 
     '/status/*' => [
