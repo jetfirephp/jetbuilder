@@ -11,16 +11,17 @@ return [
         'blocks' => [
             'Admin' => [
                 'path' => 'src/Blocks/AdminBlock/',
+                'route' => include 'routes.php',
                 'namespace' => '\\Jet\\AdminBlock',
                 'view_dir' => [
                     'admin' => 'src/Blocks/AdminBlock/Views/',
                     'module' => 'src/Modules/',
                     'theme' => 'src/Themes/'
                 ],
-                'prefix' => 'admin/:_lang_code:_website?',
+                'prefix' => 'admin/:_lang_code(?:/)?(test-:_website)?',
                 //'subdomain' => 'admin',
                 'params' => [
-                    'arguments' => ['_website' => '/[0-9]'],
+                    'arguments' => ['_website' => '[a-z-0-9]+'],
                     'domain_key' => 'admin_domain',
                     'locale_domain' => 'admin',
                     'lang_codes' => [
