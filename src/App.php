@@ -77,10 +77,29 @@ class App
             $dir = $path . $folder;
             if (is_dir($dir) && is_file($dir . '/Config/init.php')) {
                 $init = include $dir . '/Config/init.php';
-                $include_files = array_replace_recursive($include_files, $init);
+                $include_files = $this->mergeConfig($include_files, $init);
             }
         }
         return $include_files;
+    }
+
+    /**
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public function mergeConfig(array &$array1, array &$array2)
+    {
+        $merged = $array1;
+        foreach ($array2 as $key => &$value) {
+            if (is_array($value) && isset ($merged [$key]) && is_array($merged [$key])) {
+                if (is_int(current(array_keys($value)))) $value = array_merge($merged [$key], $value);
+                $merged [$key] = $this->mergeConfig($merged [$key], $value);
+            } else {
+                $merged [$key] = $value;
+            }
+        }
+        return $merged;
     }
 
 }

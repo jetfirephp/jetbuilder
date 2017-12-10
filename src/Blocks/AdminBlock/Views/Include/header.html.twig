@@ -71,6 +71,16 @@
                 {% endif %}
             {% endfor %}
         </ul>
+        <!-- Change language -->
+        <div class="dropdown">
+            <span class="topbar-btn" data-toggle="dropdown"><img class="icon" src="{{ asset('img/flag/' ~ lang ~ '.png') }}" alt="{{ lang }}"> {{ lang | trans }}</span>
+            <div class="dropdown-menu dropdown-menu-right">
+                {% for lang, iso in languages %}
+                    <a class="dropdown-item active" href="{{ path('admin', {'_lang_code': lang}) }}dashboard"><img class="icon" src="{{ asset('img/flag/' ~ lang ~ '.png') }}" alt="{{ lang }}"> {{ lang | trans }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- END Change language -->
 
     </div>
 </header>

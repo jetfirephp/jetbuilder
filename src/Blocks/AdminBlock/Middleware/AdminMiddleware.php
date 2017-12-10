@@ -105,6 +105,8 @@ class AdminMiddleware
         $data['public_path'] = rtrim(WEBROOT, '/');
         $data['field_types'] = $custom_field_type;
         $data['hook'] = $app->data['admin']['hook'];
+        $data['languages'] = $app->data['app']['blocks']['Admin']['params']['lang_codes'];
+        $data['lang'] = $app->data['_lang_code'];
 
         return $data;
     }

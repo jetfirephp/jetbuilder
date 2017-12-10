@@ -60,8 +60,8 @@ class TranslationMiddleware
         $params = $route->getTarget('params');
 
         if (isset($route->getKeys()[':_lang_code']) && isset($params['locale_domain'])) {
-            if (!isset($params['lang_codes'][$route->getKeys()[':_lang_code']])) return false;
-            $app->data['_lang_code'] = $route->getKeys()[':_lang_code'];
+            if (!isset($params['lang_codes'][$route->getKeys()[':_lang_code']['value']])) return false;
+            $app->data['_lang_code'] = $route->getKeys()[':_lang_code']['value'];
             $app->data['_locale'] = $params['lang_codes'][$app->data['_lang_code']];
         }
 

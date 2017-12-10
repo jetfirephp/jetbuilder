@@ -66,7 +66,7 @@ class AppTranslationProvider extends Provider
                     $this->translator->addResource('array', include $block_locale, $locale, $domain);
                 }elseif(is_array($block_locale)) {
                     foreach ($block_locale as $path) {
-                        if (!is_array($path) && is_file($path)) $path = include $path;
+                        if (!is_array($path) && is_file($path)) $path = include ($path);
                         $this->translator->addResource('array', $path, $locale, $domain);
                     }
                 }

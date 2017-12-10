@@ -18,10 +18,10 @@ return [
                     'module' => 'src/Modules/',
                     'theme' => 'src/Themes/'
                 ],
-                'prefix' => 'admin/:_lang_code(?:/)?(test-:_website)?',
+                'prefix' => 'admin/:_lang_code[/:_website]',
                 //'subdomain' => 'admin',
                 'params' => [
-                    'arguments' => ['_website' => '[a-z-0-9]+'],
+                    'arguments' => ['_website' => '?(1)([0-9]+)'],
                     'domain_key' => 'admin_domain',
                     'locale_domain' => 'admin',
                     'lang_codes' => [
@@ -62,7 +62,7 @@ return [
 
         'module_check' => false,
 
-        'hook' => include('hook.php'),
+        'hook' => include 'hook.php',
 
         'custom_field_type' => [
             'basic_type' => [

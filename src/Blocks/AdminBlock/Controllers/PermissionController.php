@@ -13,6 +13,6 @@ class PermissionController extends Controller
 {
 
     public function index(){
-        return ['routes' => $this->app->data['routes']['src/Blocks/AdminBlock/']];
+        return ['routes' => $this->app->data['app']['blocks']['Admin']['route']];
     }
 }

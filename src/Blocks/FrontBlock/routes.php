@@ -6,7 +6,7 @@ return [
     '/' => [
         'use' => 'FrontController@dispatch',
     ],
-    '{subdomain}.{host}/*' => [
+    '{subdomain}.{host}/test/*' => [
         'use' => 'FrontController@dispatch',
         /*'subdomain' => '((?!admin|api|www|mail|info|contact|support).)*'*/
     ],

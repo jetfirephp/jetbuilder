@@ -2,6 +2,10 @@
 
 return [
 
+    /* Languages */
+    'fr' => 'Français',
+    'en' => 'Anglais',
+
     /* Form inputs */
     'Password' => 'Mot de passe',
     'Submit' => 'Valider',
