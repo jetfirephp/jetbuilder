@@ -47,7 +47,7 @@
         <ul class="topbar-btns">
             {% for key, category in hook['header']['right'] %}
                 {% if category['template'] is defined %}
-                    {% include category['template'] with {'category' : category}%}
+                    {% include category['template'] with {'category' : category} %}
                 {% else %}
                     <li class="dropdown">
                         <span class="topbar-btn" data-toggle="dropdown">
@@ -76,7 +76,7 @@
             <span class="topbar-btn" data-toggle="dropdown"><img class="icon" src="{{ asset('img/flag/' ~ lang ~ '.png') }}" alt="{{ lang }}"> {{ lang | trans }}</span>
             <div class="dropdown-menu dropdown-menu-right">
                 {% for lang, iso in languages %}
-                    <a class="dropdown-item active" href="{{ path('admin', {'_lang_code': lang}) }}dashboard"><img class="icon" src="{{ asset('img/flag/' ~ lang ~ '.png') }}" alt="{{ lang }}"> {{ lang | trans }}</a>
+                    <a class="dropdown-item active" href="{{ path('admin', {'_lang_code': lang}) }}{{ uri }}"><img class="icon" src="{{ asset('img/flag/' ~ lang ~ '.png') }}" alt="{{ lang }}"> {{ lang | trans }}</a>
                 {% endfor %}
             </div>
         </div>

@@ -68,6 +68,11 @@ class Account extends Model implements \JsonSerializable
      */
     protected $data;
     /**
+     * @ManyToOne(targetEntity="\Jet\FrontBlock\Models\Address")
+     * @JoinColumn(name="address_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     */
+    protected $address;
+    /**
      * @Column(type="datetime")
      */
     public $registered_at;
@@ -310,8 +315,8 @@ class Account extends Model implements \JsonSerializable
      */
     public function onPostRemove()
     {
-        if (!is_null($this->tmp_id) && is_dir(ROOT. '/public/upload/accounts/' . $this->tmp_id)) {
-            delTree(ROOT . '/public/upload/accounts/' . $this->tmp_id);
+        if (!is_null($this->tmp_id) && is_dir(ROOT. '/public/upload/default/accounts/' . $this->tmp_id)) {
+            delTree(ROOT . '/public/upload/default/accounts/' . $this->tmp_id);
             $this->tmp_id = null;
         }
     }

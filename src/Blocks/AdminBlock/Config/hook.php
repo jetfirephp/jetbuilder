@@ -2,7 +2,7 @@
 
 return [
     'left_sidebar' => [
-        'CMS' => [
+        'Main' => [
             'Dashboard' => [
                 'icon' => 'fa fa-home',
                 'link' => '/dashboard'
@@ -21,13 +21,12 @@ return [
                 'icon' => 'fa fa-puzzle-piece',
                 'link' => '/pages'
             ],
-            'Themes' => [
+            'Design' => [
                 'icon' => 'ti-layout',
-                'link' => '/themes'
-            ],
-            'Tools' => [
-                'icon' => 'ion-wrench',
                 'items' => [
+                    'Themes' => [
+                        'link' => '/themes'
+                    ],
                     'Templates' => [
                         'link' => '/templates',
                     ],
@@ -38,17 +37,16 @@ return [
             ]
         ],
         'Configuration' => [
-            'Accounts' => [
-                'icon' => 'fa fa-user',
-                'link' => '/accounts'
-            ],
             'Websites' => [
                 'icon' => 'fa fa-tv',
                 'link' => '/websites'
             ],
-            'Permissions' => [
-                'icon' => 'fa fa-unlock-alt',
+            'Administration' => [
+                'icon' => 'ion-gear-b',
                 'items' => [
+                    'Accounts' => [
+                        'link' => '/accounts'
+                    ],
                     'Roles' => [
                         'link' => '/roles'
                     ],

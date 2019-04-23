@@ -305,8 +305,8 @@ class Website extends Model implements \JsonSerializable
      */
     public function onPostRemove()
     {
-        if (!is_null($this->tmp_id) && is_dir(ROOT . '/public/media/sites/' . $this->tmp_id)) {
-            delTree(ROOT . '/public/media/sites/' . $this->tmp_id);
+        if (!is_null($this->tmp_id) && is_dir(ROOT . '/public/upload/default/sites/' . $this->tmp_id)) {
+            delTree(ROOT . '/public/upload/default/sites/' . $this->tmp_id);
             $this->tmp_id = null;
         }
     }

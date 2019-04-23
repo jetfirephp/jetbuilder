@@ -2,6 +2,11 @@
 
 return [
 
+    '/asset/:path'	=> [
+        'use' => 'AssetController@asset',
+        'arguments' => ['path' => '(.*)']
+    ],
+
     /* PROD */
     '/' => [
         'use' => 'FrontController@dispatch',

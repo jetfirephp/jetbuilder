@@ -63,6 +63,27 @@ return [
         'generateRoutePath' => true,
     ],
 
+    // assets configuration
+    'asset' => [
+        'dist' => ROOT . '/public/dist',
+        'cache' => ROOT . '/var/cache/assets/',
+        'debug' => true,
+        // https://github.com/kriswallsmith/assetic for other filters
+        'filters' => [
+            // css filters
+            //'sass' => new \Assetic\Filter\Sass\ScssFilter('/path/to/parser/sass'),
+            'yui_css' => new \Assetic\Filter\Yui\CssCompressorFilter(ROOT . '/yuicompressor.jar', 'java'),
+            // js filters
+            'yui_js' => new \Assetic\Filter\Yui\JsCompressorFilter(ROOT . '/yuicompressor.jar', 'java'),
+            //'tsc' => new \Assetic\Filter\TypeScriptFilter('/path/to/tscBin'),
+            //image filters
+            //'png' => new \Assetic\Filter\PngoutFilter('/usr/bin/pngoutBin')
+        ],
+        'workers' => [
+            //new \Assetic\Factory\Worker\CacheBustingWorker('-')
+        ]
+    ],
+
     // template engine configuration
     'template' => [
         'use' => 'twig',
@@ -84,6 +105,7 @@ return [
                     'Jet\Extensions\Twig\DefaultExtension',
                     'Jet\Extensions\Twig\FrontExtension',
                     'Jet\Extensions\Twig\TextExtension',
+                    'Jet\Extensions\Twig\AsseticExtension',
                     'Twig_Extension_StringLoader'
                 ]
             ],
@@ -129,7 +151,6 @@ return [
             'JetFire\Framework\Commands\Server',
             'JetFire\Framework\Commands\Route',
             'Jet\Commands\LoadFixtures',
-            'Jet\Modules\Ikosoft\Commands\ImportCommand',
         ],
         'new' => [
             'Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand',
@@ -143,8 +164,6 @@ return [
 
     // cache configuration
     'cache' => [
-        'dev' => 'array_cache',
-        'prod' => 'redis_cache',
         'drivers' => [
             'array_cache' => [
                 'class' => 'Doctrine\Common\Cache\ArrayCache'
@@ -178,14 +197,6 @@ return [
     'session' => [
         'name' => 'jetfire',
         'class' => 'JetFire\Http\Session',
-        'dev' => [
-            'storage' => 'native_storage',
-            'handler' => 'native_handler'
-        ],
-        'prod' => [
-            'storage' => 'native_storage',
-            'handler' => 'file_handler'
-        ],
         'storages' => [
             'native_storage' => [
                 'class' => 'Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage',
@@ -239,35 +250,6 @@ return [
     ],
 
     'log' => [
-        'dev' => [
-            'main' => [
-                'handlers' => ['console'],
-                'processors' => ['introspection_processor']
-            ],
-            'import' => [
-                'handlers' => ['import_handler'],
-                'processors' => ['web_processor']
-            ],
-            'payment' => [
-                'handlers' => ['console'],
-                'processors' => ['web_processor']
-            ]
-        ],
-        'prod' => [
-            'main' => [
-                'handlers' => ['file_handler'],
-                'processors' => ['web_processor']
-            ],
-            'import' => [
-                'handlers' => ['import_handler'],
-                'processors' => ['web_processor']
-            ],
-            'payment' => [
-                'handlers' => ['payment_handler'],
-                'processors' => ['web_processor']
-            ]
-        ],
-
         'handlers' => [
             'console' => [
                 'class' => 'Monolog\Handler\StreamHandler',

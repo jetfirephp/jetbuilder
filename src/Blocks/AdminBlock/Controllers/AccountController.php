@@ -48,7 +48,7 @@ class AccountController extends AdminController
      */
     public function create(AccountRequest $request, Auth $auth)
     {
-        if ($request->method() == 'POST' && $auth->get('status')->level <= self::ADMIN_LEVEL) {
+        if ($request->method() == 'POST' && $auth->get('status')->level <= self::ADMIN_LEVEL) {        
             $account = new Account();
             $response = $request->validate('createRules');
             if ($response === true) {

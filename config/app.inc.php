@@ -26,15 +26,15 @@
                     'path' => 'src/Blocks/PublicBlock/',
                     'route' => include ROOT . '/src/Blocks/PublicBlock/routes.php',
                     'namespace' => '\\Jet\\PublicBlock',
-                    'view_dir' => 'src/Blocks/PublicBlock/Views/',
-                    'model' => 'src/Models/'
+                    'view_dir' => ROOT . '/src/Blocks/PublicBlock/Views/',
+                    'model' =>  ROOT . '/src/Models/'
                 ),
             'Front' =>
                 array(
                     'path' => 'src/Blocks/FrontBlock/',
                     'route' => include ROOT . '/src/Blocks/FrontBlock/routes.php',
                     'namespace' => '\\Jet\\FrontBlock',
-                    'view_dir' => 'src/Blocks/FrontBlock/Views/'
+                    'view_dir' => ROOT . '/src/Blocks/FrontBlock/Views/'
                 ),
         ),
     

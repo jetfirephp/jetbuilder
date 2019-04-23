@@ -23,6 +23,14 @@ class App
     }
 
     /**
+     * @return \JetFire\Framework\App
+     */
+    public function getSystemApp()
+    {
+        return $this->systemApp;
+    }
+
+    /**
      * @description run main application
      */
     public function run()

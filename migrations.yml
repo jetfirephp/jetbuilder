@@ -1,4 +1,4 @@
-name: Webzy Migrations
+name: JetBuilder Migrations
 migrations_namespace: DoctrineMigrations
 table_name: migration_versions
 migrations_directory: /src/Migrations

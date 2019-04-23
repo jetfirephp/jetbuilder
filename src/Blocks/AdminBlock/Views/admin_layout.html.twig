@@ -14,7 +14,10 @@
         <link rel="icon" href="{{ asset('upload/default/favicon.ico') }}">
 
         <!-- BEGIN STYLESHEETS -->
-        {{ assets(libs, 'css') }}
+        {#<link rel="stylesheet" href="{{ assetic_stylesheets('admin_css', 'yui_css', {'output':'/admin.css'}) }}">#}
+        {% stylesheets 'admin_css' filter='yui_css' output='/asset/dist/admin.css' %}
+            <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+        {% endstylesheets %}
         {% block css %}{% endblock %}
         <!-- END STYLESHEETS -->
 
@@ -43,7 +46,10 @@
         </main>
 
         <!-- BEGIN JAVASCRIPT -->
-        {{ assets(libs, 'js') }}
+        {#{{ assets(libs, 'js') }}#}
+        {% javascripts 'admin_js' filter='yui_js' output='/asset/dist/admin.js'%}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
         {% block js %}{% endblock %}
         <!-- END JAVASCRIPT -->
 

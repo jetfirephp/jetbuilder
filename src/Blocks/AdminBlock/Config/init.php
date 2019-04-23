@@ -14,9 +14,9 @@ return [
                 'route' => include 'routes.php',
                 'namespace' => '\\Jet\\AdminBlock',
                 'view_dir' => [
-                    'admin' => 'src/Blocks/AdminBlock/Views/',
-                    'module' => 'src/Modules/',
-                    'theme' => 'src/Themes/'
+                    'admin' => ROOT . '/src/Blocks/AdminBlock/Views/',
+                    'module' => ROOT . '/src/Modules/',
+                    'theme' => ROOT . '/src/Themes/'
                 ],
                 'prefix' => 'admin/:_lang_code[/:_website]',
                 //'subdomain' => 'admin',
@@ -36,29 +36,33 @@ return [
                 'en_GB' => [ROOT . '/src/Blocks/AdminBlock/Resources/locale/en_GB.php'],
                 'fr_FR' => [ROOT . '/src/Blocks/AdminBlock/Resources/locale/fr_FR.php'],
             ]
+        ],
+        'assets' => [
+            'admin' => [
+                'targetPath' => [
+                    'css' => 'admin.css',
+                    'js' => 'admin.js'
+                ],
+                'css' => [
+                    //'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i',
+                    'src/Blocks/AdminBlock/Resources/public/css/*.css',
+                    /*'src/Blocks/AdminBlock/Resources/public/css/app.min.css',
+                    'src/Blocks/AdminBlock/Resources/public/css/style.min.css',
+                    'src/Blocks/AdminBlock/Resources/public/css/admin.css'*/
+                ],
+                'js' => [
+                    'https://unpkg.com/vue',
+                    'https://unpkg.com/axios/dist/axios.min.js',
+                    'src/Blocks/AdminBlock/Resources/public/js/core.min.js',
+                    'src/Blocks/AdminBlock/Resources/public/js/app.min.js',
+                    'src/Blocks/AdminBlock/Resources/public/js/script.min.js',
+                    'src/Blocks/AdminBlock/Resources/public/js/admin.js',
+                ]
+            ],
         ]
     ],
 
     'admin' => [
-
-        'libs' => [
-            'basePath' => 'src/Blocks/AdminBlock/Resources/public/',
-            'css' => [
-                'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i',
-                'core.min.css',
-                'app.min.css',
-                'style.min.css',
-                'admin.css'
-            ],
-            'js' => [
-                'https://unpkg.com/vue',
-                'https://unpkg.com/axios/dist/axios.min.js',
-                'core.min.js',
-                'app.min.js',
-                'script.min.js',
-                'admin.js',
-            ]
-        ],
 
         'module_check' => false,
 

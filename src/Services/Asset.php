@@ -43,11 +43,19 @@ class Asset
      * @param string $path
      * @return string
      */
-    public function getBaseUrl($path = '')
+    public function getBaseUrl($path = null)
     {
         $detail = $this->app->get('routing')->getRouter()->route->getDetail();
         $prefix = isset($detail['prefix']) ? $detail['prefix'] : '';
         return (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http') . '://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']) . ((isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] !== '80') ? ':' . $_SERVER['SERVER_PORT'] : '') . (is_null($path) ? $_SERVER['REQUEST_URI'] : str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']) . $prefix . '/' . trim($path, '/'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootUrl()
+    {
+        return (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http') . '://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']) . ((isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] !== '80') ? ':' . $_SERVER['SERVER_PORT'] : '') . str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
     }
 
     /**
@@ -59,7 +67,7 @@ class Asset
     {
         if (substr($value, 0, 4) === 'http' && strpos($value, '://') !== false) return $value;
         $blocks = $this->app->data['app']['blocks'];
-        $path = ($full_path) ? $this->app->data['setting']['domain'] . WEBROOT : WEBROOT;
+        $path = $this->getRootUrl() . WEBROOT;
         foreach ($blocks as $block) {
             if (substr($value, -3) == '.js' && is_file(ROOT . '/' . $block['path'] . 'Resources/public/js/' . $value)) return $path . $block['path'] . 'Resources/public/js/' . $value;
             if (substr($value, -4) == '.css' && is_file(ROOT . '/' . $block['path'] . 'Resources/public/css/' . $value)) return $path . $block['path'] . 'Resources/public/css/' . $value;
@@ -90,7 +98,7 @@ class Asset
                 $this->render($this->app->get('Jet\Services\Asset')->getPublicPath($lib, false), $type);
             }
         }
-        if($this->app->data['setting']['minify'] == true) {
+        if ($this->app->data['setting']['minify'] == true) {
             $path = ($this->app->data['setting']['environment'] == 'dev')
                 ? rtrim('/min/?' . $path, ',')
                 : $minify->build_uri(rtrim($path, ','), $type);

@@ -78,9 +78,13 @@ class AdminMiddleware
                 'app_name' => $app_name,
                 'admin_url' => $admin_url,
                 'locale' => $app->data['_locale'],
-                'libs' => $app->data['admin']['libs']
+               // 'libs' => $app->data['admin']['libs'],
+                'uri' => $route->getDetail()['uri']
             ];
-            $data = (/*$auth->check() && */$route->getTarget('controller') != AuthController::class && !in_array($route->getTarget('action'), ['logout', 'getAuth'])) ? array_merge($this->getAdminData($app, $auth), $data) : $data;
+
+            $data = (/*$auth->check() && */$route->getTarget('controller') != AuthController::class && !in_array($route->getTarget('action'), ['logout', 'getAuth']))
+                ? array_merge($this->getAdminData($app, $auth), $data)
+                : $data;
 
             $route->addTarget('data', array_merge($data, $route->getTarget('data')));
 
