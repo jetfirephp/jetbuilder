@@ -129,7 +129,6 @@ return [
             'JetFire\Framework\Commands\Server',
             'JetFire\Framework\Commands\Route',
             'Jet\Commands\LoadFixtures',
-            'Jet\Modules\Ikosoft\Commands\ImportCommand',
         ],
         'new' => [
             'Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand',
@@ -143,8 +142,6 @@ return [
 
     // cache configuration
     'cache' => [
-        'dev' => 'array_cache',
-        'prod' => 'redis_cache',
         'drivers' => [
             'array_cache' => [
                 'class' => 'Doctrine\Common\Cache\ArrayCache'
@@ -178,14 +175,6 @@ return [
     'session' => [
         'name' => 'jetfire',
         'class' => 'JetFire\Http\Session',
-        'dev' => [
-            'storage' => 'native_storage',
-            'handler' => 'native_handler'
-        ],
-        'prod' => [
-            'storage' => 'native_storage',
-            'handler' => 'file_handler'
-        ],
         'storages' => [
             'native_storage' => [
                 'class' => 'Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage',
@@ -239,35 +228,6 @@ return [
     ],
 
     'log' => [
-        'dev' => [
-            'main' => [
-                'handlers' => ['console'],
-                'processors' => ['introspection_processor']
-            ],
-            'import' => [
-                'handlers' => ['import_handler'],
-                'processors' => ['web_processor']
-            ],
-            'payment' => [
-                'handlers' => ['console'],
-                'processors' => ['web_processor']
-            ]
-        ],
-        'prod' => [
-            'main' => [
-                'handlers' => ['file_handler'],
-                'processors' => ['web_processor']
-            ],
-            'import' => [
-                'handlers' => ['import_handler'],
-                'processors' => ['web_processor']
-            ],
-            'payment' => [
-                'handlers' => ['payment_handler'],
-                'processors' => ['web_processor']
-            ]
-        ],
-
         'handlers' => [
             'console' => [
                 'class' => 'Monolog\Handler\StreamHandler',

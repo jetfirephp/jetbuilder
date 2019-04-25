@@ -42,7 +42,7 @@ return [
             'rule' => [
                 'shared' => true,
                 'call' => [
-                    'init' => ['#config.session', '#setting.environment'],
+                    'init' => ['#config.session', '#setting.session'],
                     'start' => []
                 ]
             ],
@@ -88,7 +88,7 @@ return [
             'rule' => [
                 'shared' => true,
                 'call' => [
-                    'init' => ['#config.cache', '#setting.environment'],
+                    'init' => ['#config.cache', '#setting.cache'],
                 ]
             ]
         ],
@@ -97,7 +97,7 @@ return [
             'rule' => [
                 'shared' => true,
                 'call' => [
-                    'init' => ['#config.orm', '#setting.db', '#app.blocks', '#setting.environment'],
+                    'init' => ['#config.orm', '#config.system.default.db', '#setting.db', '#app.blocks', '#setting.environment'],
                     'provide' => ['#config.system.default'],
                     'setDebugBar' => ['#config.orm.debug_toolbar']
                 ],
@@ -137,7 +137,7 @@ return [
             'rule' => [
                 'shared' => true,
                 'call' => [
-                    'init' => ['#config.log', '#setting.environment', '#config.system.default'],
+                    'init' => ['#config.log', '#setting.log', '#config.system.default'],
                     'setup' => [],
                 ]
             ]
@@ -157,7 +157,7 @@ return [
                 'shared' => true,
                 'call' => [
                     'init' => ['#config.commands'],
-                    'ormCommands' => ['#config.orm.use']
+                    'ormCommands' => ['#config.orm.use', '#config.system.default.db']
                 ]
             ]
         ],
